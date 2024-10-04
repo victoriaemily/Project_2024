@@ -1,21 +1,22 @@
 # CSCE 435 Group project
 
-## 0. Group number: 
+## 0. Group number: 20
 
 ## 1. Group members:
-1. First
-2. Second
-3. Third
-4. Fourth
+1. Victoria Chen
+2. Arielle Shaver
+3. Victoria Chiang
+4. Bonnie Wu
 
 ## 2. Project topic (e.g., parallel sorting algorithms)
+Parallel Sorting Algorithms
 
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
 
-- Bitonic Sort:
-- Sample Sort:
-- Merge Sort:
-- Radix Sort:
+- Bitonic Sort (Bonnie): 
+- Sample Sort (Arielle)s:
+- Merge Sort (Victoria):
+- Radix Sort (Vic):
 
 ### 2b. Pseudocode for each parallel algorithm
 - For MPI programs, include MPI calls you will use to coordinate between processes
