@@ -62,6 +62,8 @@ MPI_Finalize()
 - For MPI programs, include MPI calls you will use to coordinate between processes
 
 ### 2c. Evaluation plan - what and how will you measure and compare
-- Input sizes, Input types
+- Input sizes: 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28
+- Input types: Sorted, Random, Reverse sorted, 1% perturbed
 - Strong scaling (same problem size, increase number of processors/nodes)
 - Weak scaling (increase problem size, increase number of processors)
+- For number of processors: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
