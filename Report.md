@@ -14,7 +14,7 @@ Parallel Sorting Algorithms
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
 
 - Bitonic Sort (Bonnie): 
-- Sample Sort (Arielle)s:
+- Sample Sort (Arielle):
 - Merge Sort (Victoria):
 - Radix Sort (Vic):
 ```
@@ -110,7 +110,167 @@ MPI_Finalize()
                 d. Merge Function called so we can combine it into a single sorted array 
 	
 ```
+- Sample Sort:
+```
+Main Function:
 
+    1. Get user input for data_type, size, num_procs, and oversampling_factor (k)
+
+    2. // Initialize MPI
+        Initialize MPI  // Set up MPI environment for parallel processing
+        Get rank of the current process (task_id)  // Determine if the current process is the master or a worker
+        Get the total number of processes (num_tasks)  // Get the total number of processes available
+
+    3. // Check if there are enough tasks available
+         If num_tasks < 2:
+            Print "Need at least two MPI tasks. Quitting..."  // Ensure at least one master and one worker are available
+            Abort MPI with error code (use MPI_Abort)  // Abort the program if there are insufficient processes
+            Exit program  // Exit as parallel sorting cannot proceed with fewer than 2 processes
+
+    4. Set the number of buckets (p) = num_tasks - 1
+       // The number of buckets is set to the number of worker processes (master does not count as a worker)
+
+    5.  // Synchronize all processes to start computation using MPI Barrier 
+        MPI_Barrier()  // Ensure all processes reach this point before proceeding, so everyone starts at the same time
+
+    6. // Master Process
+        If task_id == MASTER:
+            Print "Parallel samplesort with master-worker has started with num_tasks tasks."
+            Print "Initializing data..."
+
+            // Generate input data of specified data_type
+            Generate 'size' amount of input_data of type 'data_type'  
+            // Create the initial data to be sorted, e.g., an array of integers or floats
+
+            // Sample n * k elements from input_data
+            Sample 'p * oversampling_factor' elements from input_data  
+            // Randomly select elements for sampling to ensure good splitters
+            Sort the sampled elements  
+            // Sort the sampled elements to help determine appropriate bucket boundaries
+            Select the k-th, 2*k-th, ..., (p-1)*k-th elements as splitters  
+            // Use these sampled elements to determine splitters for partitioning the data into buckets
+
+            // Partition the data into buckets based on splitters
+            Create p buckets based on the splitters  
+            // Each bucket will hold data that falls within a specific range defined by the splitters
+            Loop over input_data:
+                Place each element in the appropriate bucket  
+                // For each element, determine which bucket it belongs to based on the splitters
+
+            // Send buckets to worker tasks
+            For each worker process from 1 to numworkers:
+                Send the assigned bucket to each worker using MPI_Send  
+                // Use MPI to send each bucket to the corresponding worker for sorting
+                Print "Sending bucket to task", worker_process_id  
+                // Log the process of sending buckets to keep track of distribution
+
+            // Master sorts its own bucket
+            Print "Master sorting its own bucket..."
+            masterBucket = bucket[MASTER]  
+            // The master will sort its own portion of data
+            low = 0
+            high = length(masterBucket) - 1
+
+            // Sorting the bucket
+            Create a stack to keep track of subarrays  
+            // Use a stack for iterative quicksort (to avoid recursive function calls)
+            Push (low, high) onto the stack  
+            // Start sorting the entire range of the master's bucket
+
+            While stack is not empty:
+                Pop (low, high) from the stack  
+                // Get the current subarray to sort
+
+                If low < high:
+                    pivot = masterBucket[high]  
+                    // Select the last element as the pivot for partitioning
+                    i = low - 1  
+                    // Initialize the index of the smaller element
+
+                    // Partitioning the array
+                    For j from low to high - 1:
+                        If masterBucket[j] <= pivot:
+                            i = i + 1
+                            Swap masterBucket[i] and masterBucket[j]  
+                            // Swap elements to ensure all elements less than the pivot are on the left
+
+                    Swap masterBucket[i + 1] and masterBucket[high]  
+                    // Place the pivot element in its correct sorted position
+                    pivot_index = i + 1
+
+                    // Push the subarrays onto the stack to sort them later
+                    Push (low, pivot_index - 1) onto the stack  
+                    // Push the left subarray (elements less than the pivot) onto the stack
+                    Push (pivot_index + 1, high) onto the stack  
+                    // Push the right subarray (elements greater than the pivot) onto the stack
+
+            // Gather sorted buckets from worker tasks
+            Set message type (mtype) = FROM_WORKER
+
+            For each worker process from 1 to numworkers:
+                Receive sorted bucket from worker using MPI_Receive  
+                // Receive the sorted bucket from each worker
+                Append sorted bucket to final sortedData  
+                // Collect all sorted buckets to form the final sorted result
+                Print "Received sorted bucket from task", worker_process_id  
+                // Log the receipt of sorted data from each worker
+
+    7. // Worker Processes
+        Else If task_id > MASTER:
+            // Receive bucket data from master
+            Set message type (mtype) = FROM_MASTER
+            Receive the assigned bucket from master using MPI_Receive  
+            // Receive the data bucket that the master has assigned to this worker
+            worker_bucket = received_bucket
+
+            // Sort the received_bucket
+            Print "Worker", task_id, "sorting its assigned bucket..."
+            low = 0
+            high = length(worker_bucket) - 1
+
+            Create a stack to keep track of subarrays  
+            // Use a stack to perform iterative quicksort on the received bucket
+            Push (low, high) onto the stack  
+            // Start sorting the entire range of the worker's bucket
+
+            While stack is not empty:
+                Pop (low, high) from the stack  
+                // Get the current subarray to sort
+
+                If low < high:
+                    pivot = worker_bucket[high]  
+                    // Choose the last element as the pivot for partitioning
+                    i = low - 1
+
+                    // Partitioning the array
+                    For j from low to high - 1:
+                        If worker_bucket[j] <= pivot:
+                            i = i + 1
+                            Swap worker_bucket[i] and worker_bucket[j]  
+                            // Swap elements to place them correctly relative to the pivot
+
+                    Swap worker_bucket[i + 1] and worker_bucket[high]  
+                    // Place the pivot in its correct sorted position
+                    pivot_index = i + 1
+
+                    // Push the subarrays onto the stack to sort them later
+                    Push (low, pivot_index - 1) onto the stack  
+                    // Push the left subarray onto the stack for sorting
+                    Push (pivot_index + 1, high) onto the stack  
+                    // Push the right subarray onto the stack for sorting
+
+            // Send sorted bucket back to master
+            Print "Worker", task_id, "sending sorted bucket back to master..."
+            Set message type (mtype) = FROM_WORKER
+            Send sorted worker_bucket to master using MPI_Send  
+            // Send the sorted data back to the master for final merging
+
+    8. // Finalize MPI environment
+        Finalize MPI  
+
+End Main Function
+
+```
 
 ### 2c. Evaluation plan - what and how will you measure and compare
 - Input sizes: 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28
