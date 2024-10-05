@@ -17,6 +17,10 @@ Parallel Sorting Algorithms
 - Sample Sort (Arielle):
 - Merge Sort (Victoria):
 - Radix Sort (Vic):
+
+### 2b. Pseudocode for each parallel algorithm
+- For MPI programs, include MPI calls you will use to coordinate between processes
+- Radix Sort:
 ```
 // Initialize MPI
 MPI_Init()
@@ -57,10 +61,6 @@ MPI_Gather(local_data, sorted_array, root=0)
 MPI_Finalize()
 
 ```
-
-### 2b. Pseudocode for each parallel algorithm
-- For MPI programs, include MPI calls you will use to coordinate between processes
-
 - Merge Sort:
 ```
     Main:  
