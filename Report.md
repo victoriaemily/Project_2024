@@ -8,6 +8,8 @@
 3. Victoria Chiang
 4. Bonnie Wu
 
+We are using a group chat over text to communicate.
+
 ## 2. Project topic (e.g., parallel sorting algorithms)
 Parallel Sorting Algorithms
 
@@ -260,3 +262,31 @@ End Function
 - Strong scaling (same problem size, increase number of processors/nodes)
 - Weak scaling (increase problem size, increase number of processors)
 - For number of processors: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
+
+
+For each algorithm (Bitonic Sort, Sample Sort, Merge Sort, Radix Sort), the following metrics will be measured:
+- **Execution Time**: Track the time required to complete the sort for various input sizes, input types, and processor counts.
+- **Speedup**: Compare the parallel execution time with the sequential baseline to assess the improvement for each algorithm.
+- **Efficiency**: Determine how effectively each algorithm uses additional processors by calculating speedup divided by the number of processors.
+
+#### Strong Scaling:
+- **Objective**: Analyze how each algorithm performs as the number of processors increases while keeping the input size constant.
+- **Method**: For a fixed input size (e.g., 2^24 elements), run the algorithm with 2, 4, 8, 16, 32, and more processors. We will measure execution time and calculate speedup and efficiency for each case.
+- **Comparison**: Evaluate how each algorithm’s execution time changes with different processor counts.
+
+#### Weak Scaling:
+- **Objective**: Evaluate how well each algorithm handles increasing input sizes as the number of processors grows proportionally, while ensuring each processor has sufficient work to do.
+
+- **Method**: For each input type (Sorted, Random, Reverse Sorted, 1% Perturbed), we will start with a small input size and a reasonable number of processors. As we increase the input size, we plan to proportionally increase the number of processors:
+  - 2^16 elements for 2 processors
+  - 2^18 elements for 4 processors
+  - 2^20 elements for 8 processors
+  - 2^22 elements for 16 processors
+  - 2^24 elements for 32 processors
+  - 2^26 elements for 64 processors
+  - 2^28 elements for 128 processors
+  - 2^28 elements for 256 processors
+  - 2^28 elements for 512 processors
+  - 2^28 elements for 1024 processors
+
+- **Comparison**: Measure the execution time for each combination of input size and processor count. The goal is to maintain a stable execution time as both the input size and the number of processors increase, showing strong weak scaling properties.
