@@ -117,25 +117,25 @@ Main Function:
     1. Get user input for data_type, size, num_procs, and oversampling_factor (k)
 
     2. // Initialize MPI
-        Initialize MPI  // Set up MPI environment for parallel processing
-        Get rank of the current process (task_id)  // Determine if the current process is the master or a worker
-        Get the total number of processes (num_tasks)  // Get the total number of processes available
+        MPI_Init()  // Set up MPI environment for parallel processing
+        task_id = MPI_Comm_rank(MPI_COMM_WORLD)  // Get rank of the current process (task_id)
+        num_tasks = MPI_Comm_size(MPI_COMM_WORLD)  // Get the total number of processes available (num_tasks)
 
     3. // Check if there are enough tasks available
          If num_tasks < 2:
             Print "Need at least two MPI tasks. Quitting..."  // Ensure at least one master and one worker are available
-            Abort MPI with error code (use MPI_Abort)  // Abort the program if there are insufficient processes
+            MPI_Abort(MPI_COMM_WORLD, error_code = -1)  // Abort MPI environment due to insufficient tasks
             Exit program  // Exit as parallel sorting cannot proceed with fewer than 2 processes
 
     4. Set the number of buckets (p) = num_tasks - 1
        // The number of buckets is set to the number of worker processes (master does not count as a worker)
 
     5.  // Synchronize all processes to start computation using MPI Barrier 
-        MPI_Barrier()  // Ensure all processes reach this point before proceeding, so everyone starts at the same time
+        MPI_Barrier(MPI_COMM_WORLD)  // Ensure all processes reach this point before proceeding, so everyone starts at the same time
 
     6. // Master Process
         If task_id == MASTER:
-            Print "Parallel samplesort with master-worker has started with num_tasks tasks."
+            Print "Parallel samplesort with master-worker has started with", num_tasks, "tasks."
             Print "Initializing data..."
 
             // Generate input data of specified data_type
@@ -159,17 +159,17 @@ Main Function:
 
             // Send buckets to worker tasks
             For each worker process from 1 to numworkers:
-                Send the assigned bucket to each worker using MPI_Send  
-                // Use MPI to send each bucket to the corresponding worker for sorting
+                MPI_Send(buckets[worker_process_id], dest=worker_process_id, tag=0, comm=MPI_COMM_WORLD)  
+                // Send the assigned bucket to each worker using MPI_Send
                 Print "Sending bucket to task", worker_process_id  
                 // Log the process of sending buckets to keep track of distribution
 
             // Master sorts its own bucket
             Print "Master sorting its own bucket..."
-            masterBucket = bucket[MASTER]  
+            master_bucket = bucket[MASTER]  
             // The master will sort its own portion of data
             low = 0
-            high = length(masterBucket) - 1
+            high = length(master_bucket) - 1
 
             // Sorting the bucket
             Create a stack to keep track of subarrays  
@@ -182,19 +182,19 @@ Main Function:
                 // Get the current subarray to sort
 
                 If low < high:
-                    pivot = masterBucket[high]  
+                    pivot = master_bucket[high]  
                     // Select the last element as the pivot for partitioning
                     i = low - 1  
                     // Initialize the index of the smaller element
 
                     // Partitioning the array
                     For j from low to high - 1:
-                        If masterBucket[j] <= pivot:
+                        If master_bucket[j] <= pivot:
                             i = i + 1
-                            Swap masterBucket[i] and masterBucket[j]  
+                            Swap master_bucket[i] and master_bucket[j]  
                             // Swap elements to ensure all elements less than the pivot are on the left
 
-                    Swap masterBucket[i + 1] and masterBucket[high]  
+                    Swap master_bucket[i + 1] and master_bucket[high]  
                     // Place the pivot element in its correct sorted position
                     pivot_index = i + 1
 
@@ -208,8 +208,8 @@ Main Function:
             Set message type (mtype) = FROM_WORKER
 
             For each worker process from 1 to numworkers:
-                Receive sorted bucket from worker using MPI_Receive  
-                // Receive the sorted bucket from each worker
+                sorted_bucket = MPI_Recv(source=worker_process_id, tag=0, comm=MPI_COMM_WORLD, status=MPI_STATUS_IGNORE)  
+                // Receive sorted bucket from each worker using MPI_Recv
                 Append sorted bucket to final sortedData  
                 // Collect all sorted buckets to form the final sorted result
                 Print "Received sorted bucket from task", worker_process_id  
@@ -219,9 +219,9 @@ Main Function:
         Else If task_id > MASTER:
             // Receive bucket data from master
             Set message type (mtype) = FROM_MASTER
-            Receive the assigned bucket from master using MPI_Receive  
-            // Receive the data bucket that the master has assigned to this worker
-            worker_bucket = received_bucket
+            worker_bucket = MPI_Recv(source=MASTER, tag=0, comm=MPI_COMM_WORLD, status=MPI_STATUS_IGNORE)  
+            // Receive the assigned bucket from master using MPI_Recv
+            Print "Worker", task_id, "received its bucket..."
 
             // Sort the received_bucket
             Print "Worker", task_id, "sorting its assigned bucket..."
@@ -262,11 +262,12 @@ Main Function:
             // Send sorted bucket back to master
             Print "Worker", task_id, "sending sorted bucket back to master..."
             Set message type (mtype) = FROM_WORKER
-            Send sorted worker_bucket to master using MPI_Send  
-            // Send the sorted data back to the master for final merging
+            MPI_Send(worker_bucket, dest=MASTER, tag=0, comm=MPI_COMM_WORLD)  
+            // Send the sorted data back to the master using MPI_Send
 
     8. // Finalize MPI environment
-        Finalize MPI  
+        MPI_Finalize()  
+        // Clean up the MPI environment and terminate the program
 
 End Main Function
 
