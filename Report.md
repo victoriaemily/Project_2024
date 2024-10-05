@@ -258,6 +258,47 @@ End Function
 
 ```
 
+```
+MAIN BEGIN
+    // Initialize MPI
+    MPI_Init()
+    
+    // Get the number of processes
+    MPI_Comm_size()
+    
+    // Get the rank/ID of the process
+    MPI_Comm_rank()
+    
+    // Scatter data among processes
+    MPI_Scatter()
+    
+    // Bitonic Sort process
+    for (i = 0; i < log(number processes); i++) {  // log(n) stages of sorting, also creates distance between partners as sorting progresses
+        for (j = i; j >= 0; j--) {      // Comparing pairs (ex: if i = 2, j takes the values 2, 1, and 0)
+            if ((process_rank >> (i + 1)) % 2 == 0 && (process_rank >> j) % 2 == 0) || ((process_rank >> (i + 1)) % 2 != 0 && (process_rank >> j) % 2 != 0){ 
+		// Use rightshift operator to determine which processes are swapping for the current stage of sorting (ascending or descending order)
+                // Both ranks are even or both are odd
+                Swap elements in ascending order (smaller rank will have smaller number)
+                (send maximum value to partner
+                receive minimum value from partner)
+            } 
+            else if ((process_rank >> (i + 1)) % 2 != 0 && (process_rank >> j) % 2 != 0) {
+                // One rank is even and one is odd
+                Swap elements in descending order (vice versa to the ascending one)
+                (send minimum value to partner
+                receive maximum value from partner)
+            }
+        }
+    }
+
+    // Gather results back to the root process
+    MPI_Gather()
+    
+    // Finalize MPI
+    MPI_Finalize()
+MAIN END
+```
+
 ### 2c. Evaluation plan - what and how will you measure and compare
 - Input sizes: 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28
 - Input types: Sorted, Random, Reverse sorted, 1% perturbed
