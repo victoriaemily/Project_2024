@@ -114,7 +114,7 @@ MPI_Finalize()
 ```
 Main Function:
 
-    1. Get user input for `data_type`, `size` (total number of elements), and `num_procs` (number of processors).
+    1. Get user input for data_type, size (total number of elements), and num_procs (number of processors).
 
     2. // Initialize MPI
        MPI_Init()  // Set up MPI environment for parallel processing
@@ -127,7 +127,7 @@ Main Function:
            MPI_Abort(MPI_COMM_WORLD, error_code = -1)
            Exit program
 
-    4. Set the number of buckets (`m`) = num_tasks  // `m` is the total number of processes, which will sort in parallel.
+    4. Set the number of buckets (m) = num_tasks  // m is the total number of processes, which will sort in parallel.
     
     5. // Synchronize all processes
        MPI_Barrier(MPI_COMM_WORLD)
@@ -138,51 +138,52 @@ Main Function:
            Print "Initializing data..."
 
            // Generate input data of specified data_type
-           Generate `size` amount of `input_data` of type `data_type` 
+           Generate size amount of input_data of type data_type 
 
-           // Draw a sample of size `s`
-           // Choose `s` based on some multiple of `m`, e.g., `s = m * oversampling_factor`
+           // Draw a sample of size s
+           // Choose s based on some multiple of m (s = m * oversampling_factor)
            s = m * oversampling_factor
-           Sample `s` elements from `input_data`  // Randomly select `s` elements for good splitter selection
+           Sample s elements from input_data  // Randomly select s elements for good splitter selection
 
            // Sort the sampled elements
            Sort the sampled elements using quicksort
            QuickSort(sampled_elements, length(sampled_elements))
 
-           // Select `m-1` splitters from the sorted samples
-           Select the `s/m`, `2*(s/m)`, ..., `(m-1)*(s/m)` elements as splitters
-           // These `m-1` splitters are used to partition the entire dataset into `m` buckets.
+           // Select m-1 splitters from the sorted samples
+           Select the s/m, 2*(s/m), ..., (m-1)*(s/m) elements as splitters
+           // These m-1 splitters will be used to partition the entire dataset into m buckets.
 
        // Broadcast the splitters to all processes
        MPI_Bcast(splitters, m-1, data_type, root=MASTER, comm=MPI_COMM_WORLD)
 
     7. // All Processes (Master and Workers)
+
        // Scatter the input data to all processes
        local_size = size / num_tasks  // Calculate the size of data each process will receive
-       local_data = Allocate array of size `local_size`
+       local_data = Array[local_size]
 
        MPI_Scatter(input_data, local_size, data_type, local_data, local_size, data_type, root=MASTER, comm=MPI_COMM_WORLD)
        // Each process now has its portion of the data to work on
 
-       // Each process partitions its data into `m` buckets
-       Local_buckets = [[] for _ in range(m)]  // Create `m` empty buckets for partitioning
+       // Each process partitions its data into m buckets
+       Local_buckets = Create m empty buckets for partitioning
 
        // Assign data to buckets based on splitters
-       For each element in `local_data`:
+       For each element in local_data:
            Determine the correct bucket for the element based on splitters
-           Append element to the corresponding bucket in `Local_buckets`
+           Append element to the corresponding bucket in Local_buckets
 
        // Prepare data for sending to other processes
        // Convert Local_buckets to an appropriate structure for MPI_Alltoallv
        send_counts = [Number of elements in each bucket to send to each process]
        send_displacements = [Offsets for each bucket to be sent]
 
-       // Use `MPI_Alltoallv` to exchange bucket data among processes
+       // Use MPI_Alltoallv to exchange bucket data among processes
        recv_counts = [Number of elements to receive from each process]  // Allocate space for receiving bucket data
        recv_displacements = [Offsets for each received bucket]
 
        total_recv_size = sum(recv_counts)  // Total size of received data
-       recv_data = Allocate array of size `total_recv_size`
+       recv_data = Allocate array of size total_recv_size
 
        MPI_Alltoallv(Local_buckets, send_counts, send_displacements, data_type, recv_data, recv_counts, recv_displacements, data_type, comm=MPI_COMM_WORLD)
        // Each process now has all the elements that belong to its assigned bucket
@@ -193,11 +194,12 @@ Main Function:
        QuickSort(local_bucket, length(local_bucket))
 
     8. // Gather sorted buckets back to the master
-       // Use `MPI_Gather` to gather all sorted buckets
+
+       // Use MPI_Gather to gather all sorted buckets
        sorted_bucket_size = length(local_bucket)
        sorted_buckets = None
        If task_id == MASTER:
-           sorted_buckets = Allocate array of size `size`  // Master will gather all sorted data
+           sorted_buckets = Array[size]  // Master will gather all sorted data
 
        MPI_Gather(local_bucket, sorted_bucket_size, data_type, sorted_buckets, sorted_bucket_size, data_type, root=MASTER, comm=MPI_COMM_WORLD)
 
@@ -218,8 +220,8 @@ QuickSort Function (arr, n):
     // arr: array to be sorted
     // n: size of the array
 
-    Create an empty stack `stack`
-    Push (0, n - 1) onto `stack`  // Push initial subarray (full range)
+    Create an empty stack stack
+    Push (0, n - 1) onto stack  // Push initial subarray (full range)
 
     While stack is not empty:
         // Pop high and low indices from stack
