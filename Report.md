@@ -257,7 +257,7 @@ QuickSort Function (arr, n):
 End Function
 
 ```
-
+Bitonic Sort
 ```
 MAIN BEGIN
     // Initialize MPI
