@@ -333,3 +333,4 @@ For each algorithm (Bitonic Sort, Sample Sort, Merge Sort, Radix Sort), the foll
   - 2^28 elements for 1024 processors
 
 - **Comparison**: Measure the execution time for each combination of input size and processor count. The goal is to maintain a stable execution time as both the input size and the number of processors increase, showing strong weak scaling properties.
+
