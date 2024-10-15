@@ -94,6 +94,12 @@ int main(int argc, char** argv) {
     num_tasks = std::stoi(argv[2]);        // num processors
     std::string input_type = argv[3];      // input type (sorted, random, etc.)
 
+    if (num_tasks < 2 ) {
+        printf("Need at least two MPI tasks. Quitting...\n");
+        MPI_Abort(MPI_COMM_WORLD, rc);
+        exit(1);
+    }
+
     adiak::value("algorithm", "sample_sort");
     adiak::value("programming_model", "mpi");
     adiak::value("data_type", "int");
