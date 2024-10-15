@@ -572,6 +572,71 @@ They will show up in the `Thicket.metadata` if the caliper file is read into Thi
         The MPI environment is finalized, marking the end of the program.
 
 ```
+- Merge Sort Algorithm:
+```
+	Sorting Functions:
+	1. void merge(int *arr1, int *arr2, int LI, int mid, int RI):
+		- This function allows for combination of two sorted subarrays into one sorted array.
+		- It takes the left index, midpoint, right index to find the boundaries of each subarray within the original array.
+		- As we go through each of the index for the left or right, we check if either the left or the right value in the each subarray is smaller before deciding which to copy into the temporary array.
+		- If we have any leftover elements after the indexes are hit their respective conditions, it will copy those to the temporary array which is arr2 in this case.
+		- Following the subarray sorting, the temporary array will be copied into arr1.
+	2. void mergeSort(int *arr1, int *arr2, int LI, int RI):
+		- This function will recursively divide the array into smaller subarrays before sorting them and merging them back sorted.
+		- As long as the left index is less than the right index  which makes sure it has enough elements to sort (at least 2 elements), we would need to find the middle point.
+		- This leads to the recursive call of mergeSort which allows it to keep dividing up the subarray for both left and the right sides in the subarray.
+		- After the dividing is complete, the merging will take place where it will call the above merge function to merge the subarrays in a sorted manner.
+
+	Main Function:
+	1. Initialize MPI/Adiak
+		- Begin by initializing the MPI environment and retrieving the rank of the current process with taskid as well as the total number of processes with numtasks
+		- Initialize Adiak as well for performance monitoring and logging as well as to collect metadata 
+	2. Input Validation
+		- Ensure that there is three command-line arguments.
+	3. Declare and Initialize Variables:
+		- Read and convert the command-line arguments into its respective variables.
+		- These arguments are the array size, number of processes, and the input type.
+	4. Collect Data with Adiak:
+		- Collect the needed information with Adiak: algorithm, programming model, data type…
+	5. Array Allocation:
+		- Allocate memory for the original array based on the given input size in preparation for the population of the array 
+	6. Array Population with Input Type:
+		- Populate the original array with the input types: sorted, random, reverse, 1%perturbed.
+		- Sorted: provide a basic sorted array based on the size of the array
+		- Random: randomly generate numbers for the array
+		- Reverse: provide a basic reversed array based on the size of the array
+		- 1%perturbed: randomly select a few values and determine the amount of swaps 
+		* this also marks the end of data initialization
+	7. Subarray Size and Memory:
+		- Determine each subarray size for process distribution
+		- Allocate memory for the subarray to be able to hold data for the current process
+	8. Scatter
+		- Start tracking comm and comm_large performance
+		- Use a barrier to synchronize all the processes in the communicator
+		- Distribute subarrays from the original array to each of the processes
+	9. Merge Sort
+		- Start tracking comp and comp_large performance
+		- Allocate a temporary memory for the tempArray that will be used for sorting in each process.
+		- Call the mergeSort function to sort that subArray
+	10. Allocate memory for final merge:
+		- Create a pointer to be used for the final sorted array 
+		- In the master process, we want to allocate memory for the final sorted array
+	11. Gather:
+		- Start tracking comm and comm_large performance
+		- Use MPI_Gather to collect all the sorted subarrays from all the processes into the master process.
+	12. Final Merge:
+		- Make sure its all the master process before allocating another temporary memory for the new temporary array that will be used in the mergeSort process for the final sorting.
+		- Start tracking comp and comp_large performance
+		- Call the mergeSort function for the sorting of the final array
+	13. Correctness Check:
+		- Start correctness_check to measure performance
+		- Use a boolean to check if its sorted with the is_sorted function. 
+		- If the boolean is true then it has been sorted and will output into the file that “The data is sorted”. 
+	14. Finalize and Cleanup
+		- Free all memory allocated areas
+	 	- Call MPI_Finalize() to finalize the MPI environment, finishing the program.
+```
+
 ## 4. Performance evaluation
 
 Include detailed analysis of computation performance, communication performance. 
