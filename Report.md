@@ -119,6 +119,150 @@ adiak::value("implementation_source", implementation_source); // Where you got t
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
 ### **See the `Builds/` directory to find the correct Caliper configurations to get the performance metrics.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
+
+## Algorithm Descriptions: 
+
+```
+- Sample Sort Algorithm:
+
+    Helper Functions:
+
+    1. void quicksort(std::vector<int>& arr);
+        - Sorts the array given as an argument using std::sort. 
+
+    2. std::vector<int> generateSortedData(int size);
+        - Creates a vector called data.
+        - Through a for loop adds values from 0 to inputted size
+        to create a sorted array and returns it. 
+
+    3. std::vector<int> generatePerturbedData(int size);
+        - Creates a vector called data using the generateSortedData function.
+        - Calculates 1% of the size given. 
+        - For 1% of the total size of values swap random elements in the
+        array to generate perturbed data.
+
+    4. std::vector<int> generateRandomData(int size);
+        - Creates a vector called data
+        - Through a for loop from index 0 to inputted_size
+        generates random data and adds it to vector.
+
+    5. std::vector<int> generateReverseSortedData(int size);
+        - Creates a vector called data.
+        - Through a for loop adds values from inputted size - 1 to 0
+        to create a reversed sorted array and returns it. 
+
+    6. std::vector<int> generateRandomInput(int size, const std::string& input_type)
+        - Uses the given input_type to decide which generation function to use.
+        - Calls data generation function based on input_type. 
+          If the input_type = "Random", it will call generateRandomData(int size).
+    
+    Main Function:
+
+    1. Initalize MPI
+        The algorithm starts by initializing the MPI environment 
+        using MPI_Init and setting up task ids for each process 
+        and the total number of processors (num_tasks).
+        Adiak is then initialized to collect metadata about the execution environment.
+
+    2. Set variables from job script arguments 
+        The input parameters passed to the program are extracted:
+            input_size: Total number of elements in the array to be sorted.
+            num_tasks: Number of processors.
+            input_type: The type of data input (sorted, random, etc.).
+    
+    3. Ensure there are at least two processors
+        If statement to make sure num_tasks is at least 2. If not,
+        then the program will abort. 
+
+    4. Adiak collects various data about the program 
+        This includes algorithm, input_type, etc. 
+
+    5. Generate data for sorting 
+        We start off by marking the region of init with caliper for timing.
+        A vector for local_data is created to generate an array based 
+        off of the input type. Each processor will receive a certain 
+        size of data to generate. This will be evenly divided. 
+        For example, if there are 8 processors, each processor 
+        generates input_size / 8 elements based on the specified input_type.
+    
+    6. Sort local data 
+        Each processor will sort the data that it created.
+        This will once again be timed by caliper but 
+        it will be noted as a small computation since we 
+        are only sorting local data and not the whole array.
+    
+    7. Drawing sample size 
+        Each processor will draw a sample size to determine how many values to sample.
+        The size s is computed as the logarithm of the number of local data 
+        elements (log2(local_data.size())). The purpose of this is to reduce
+        communication overhead by ensuring that the sample size will be more consistent
+        to the size of the data. Based on this sample size, each processor will 
+        randomly pick s samples from its data. 
+    
+    8. Gathering samples 
+        All processors send their local samples to a designated root process 
+        using MPI_Gather. MPI_Gather will collect the samples from all 
+        processors and send them to a designated root processor. 
+        The root processor receives all the samples and will combine
+        them into a single array. This process will be marked and timed
+        as a small communication by caliper. 
+    
+    9. Sample Sorting and Splitting 
+        The root process now sorts the samples. It then selects num_tasks - 1 splitters 
+        from the sorted samples, which will be used to partition the data 
+        into buckets across all processors. Therefore the number of buckets and 
+        the number of processors should be equivalent. The formula s * (i + 1) is used
+        to secure indices ensuring a good distance that efficiently partions the data.
+        The splitters are then broadcast to all processors using MPI_Bcast. 
+        This ensures that every processor knows the ranges of each bucket. Sorting
+        the samples is marked and timed as a small computation by caliper, while the 
+        Bcast function will be marked and timed as a small communication. 
+
+    10. Putting data into buckets 
+         We create a 2D vector, buckets, where each inner vector represents a bucket. 
+         The number of buckets is equal to the number of processors. 
+         Each processor has its own bucket where data will be partitioned. 
+         Each inner vector (buckets[i]) holds the values that will
+         be sent to processor i during the data exchange phase. The code iterates 
+         over each value in the local data. Each value will be placed into one of the buckets 
+         based on the splitters. This loop goes through each splitter 
+         to determine where the current value should be placed. The loop checks if the value 
+         is less than or equal to the current splitter. If less, the bucket index 
+         is set to i, meaning the value belongs in the bucket for that splitter. 
+         The loop then breaks as the correct bucket is found. If the value is 
+         greater than the current splitter, the code moves on to 
+         check the next splitter and increments.
+
+    1l. Assigning buckets to processors 
+         We then initialize our counts. We will use these
+         to assign sizes of each buckets to sendcounts to tell MPI
+         how much each processor will be sending to other processors
+         and receiving from other processors. Using all to all, we 
+         send these values to all of the processors. Next we 
+         calculate the total size of data the current processor will receive
+         by summing up all elements in recvcounts and initialize
+         recvbuf to hold the data. The send_index and 
+         receive_index arrays are then set up to indicate the starting positions 
+         for sending and receiving data in the buffers for each processor. 
+         We then convert the 2D buckets vector into a single sendbuf 
+         vector so that it can be processed by MPI, enabling each processor 
+         to send its data to the appropriate destination.
+
+    12. Sending data to buckets and sorting data 
+         Using MPI_Alltoallv, each processor sends its data in each bucket 
+         to the appropriate processors. This and steps 10-11 are marked as a 
+         large communication and timed by caliper. We then mark a large computation
+         to time the sorting of all arrays by the processors. After receiving the 
+         partitioned data, each processor sorts the received data locally.
+
+    13. Correctness Check
+         After sorting is completed, the alorithm checks if the locally
+         sorted data is in order using std::is_sorted. If not, an error is called.
+
+    14. Finalizing MPI
+        The MPI environment is finalized, marking the end of the program.
+
+```
 ## 4. Performance evaluation
 
 Include detailed analysis of computation performance, communication performance. 
