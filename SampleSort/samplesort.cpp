@@ -249,7 +249,7 @@ int main(int argc, char** argv) {
     quicksort(recvbuf);
     CALI_MARK_END("comp_large");
 
-    CALI_MARK_BEGIN("comp");
+    CALI_MARK_END("comp");
 
     // Correctness check
     CALI_MARK_BEGIN("correctness_check");
