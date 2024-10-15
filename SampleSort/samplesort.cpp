@@ -162,8 +162,12 @@ int main(int argc, char** argv) {
         }
     }
 
-    // Broadcasting Splitters so that all processes receive the splitters 
+    CALI_MARK_BEGIN("comp_small");
+   
+    // Broadcasting Splitters so that all processes receive the splitters
     MPI_Bcast(splitters.data(), num_tasks - 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    CALI_MARK_END("comp_small");
 
     // Data exchange for bucket communication (large communication)
     CALI_MARK_BEGIN("comm_large");
