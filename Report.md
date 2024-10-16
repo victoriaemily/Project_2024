@@ -481,10 +481,10 @@ programming_model: mpi,
 data_type: int, 
 size_of_data_type: 4, 
 input_size: 65536, 
-input_type: Random
-num_procs: 4
-scalability: strong
-group_num: 20
+input_type: Random,
+num_procs: 4,
+scalability: strong,
+group_num: 20,
 implementation_source: handwritten
 ```
 
@@ -729,6 +729,32 @@ They will show up in the `Thicket.metadata` if the caliper file is read into Thi
 	14. Finalize and Cleanup
 		- Free all memory allocated areas
 	 	- Call MPI_Finalize() to finalize the MPI environment, finishing the program.
+```
+Bitonic Sort Algorithm:
+```
+Helper Functions:
+1. quicksort(std::vector<int>& arr): Uses standard library's std::sort to sort a given vector of integers.
+2. generateSortedData(int size): Generates a sorted vector of integers from 0 to size-1.
+3. generatePerturbedData(int size): Creates a sorted array and randomly swaps 1% of its elements to perturb the array.
+4. generateRandomData(int size): Produces a vector of random integers, each ranging from 0 to size-1
+5. generateReverseSortedData(int size): Generates a reverse-sorted vector of integers.
+6. generateRandomInput(int size, const std::string& input_type): A function that calls the appropriate data generation method based on the user-specified input type.
+
+Sorting Functions:
+1. compare_and_swap(std::vector<int>& data, int i, int j, bool ascending): Compares two elements and swaps them if they are not in the correct order (specified by ascending).
+2. bitonic_merge(std::vector<int>& data, int low, int cnt, bool ascending): Merges two sorted halves of the data in a bitonic manner. //todo
+3. bitonic_sort(std::vector<int>& data, int low, int cnt, bool ascending): Recursively sorts the data using the bitonic sorting algorithm. //todo
+
+Main Function:
+1. Initialization
+2. Input Handling
+3. Metadata Collection
+4. Data Generation with local_data
+5. Local sorting with quicksort helper function
+6. MPI Gather comm
+7. Global Sorting
+8. Correctness Check
+9. Finalize
 ```
 
 ## 4. Performance evaluation
