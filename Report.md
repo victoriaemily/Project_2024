@@ -423,6 +423,9 @@ Bitonic Calltree:
 └─ 0.080 MPI_Comm_dup
 ```
 
+Sample Sort Calltree:
+
+
 ### 3b. Collect Metadata
 
 Have the following code in your programs to collect metadata:
@@ -447,6 +450,24 @@ adiak::value("implementation_source", implementation_source); // Where you got t
 
 Bitonic Metadata:
 
+
+Sample Sort Metadata:
+
+ adiak::init(NULL);
+ adiak::launchdate();
+ adiak::libraries();
+ adiak::cmdline();
+ adiak::clustername();
+ adiak::value("algorithm", "sample_sort");
+ adiak::value("programming_model", "mpi");
+ adiak::value("data_type", "int");
+ adiak::value("size_of_data_type", sizeof(int));
+ adiak::value("input_size", input_size);
+ adiak::value("input_type", input_type);
+ adiak::value("num_tasks", num_tasks); 
+ adiak::value("scalability", "strong"); 
+ adiak::value("group_num", "20"); 
+ adiak::value("implementation_source", "handwritten"); 
 
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
