@@ -596,6 +596,7 @@ They will show up in the `Thicket.metadata` if the caliper file is read into Thi
 	3. Declare and Initialize Variables:
 		- Read and convert the command-line arguments into its respective variables.
 		- These arguments are the array size, number of processes, and the input type.
+		- Make sure there are at least 2 MPI processes running in the program as the program needs multiple processes to distribute work.
 	4. Collect Data with Adiak:
 		- Collect the needed information with Adiak: algorithm, programming model, data type…
 	5. Array Allocation:
