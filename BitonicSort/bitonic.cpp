@@ -5,6 +5,7 @@
 #include <ctime>
 #include <mpi.h>
 #include <caliper/cali.h>
+#include <caliper/cali-manager.h>
 #include <adiak.hpp>
 #include <numeric>
 #include <stdexcept>
@@ -112,6 +113,9 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &task_id);
     MPI_Comm_size(MPI_COMM_WORLD, &num_tasks);
 
+    cali::ConfigManager mgr;
+    mgr.start();
+
     adiak::init(NULL);
     adiak::launchdate();
     adiak::libraries();
@@ -189,5 +193,8 @@ int main(int argc, char** argv) {
     }
     CALI_MARK_END("correctness_check");
 
+    mgr.stop();
+    mgr.flush();
+    
     MPI_Finalize();
 }
