@@ -405,6 +405,24 @@ CALI_MARK_END("comp");
 └─ 0.440 correctness_check
 ```
 
+
+Bitonic Calltree:
+```
+1.720 main
+├─ 0.000 MPI_Init
+├─ 0.000 data_init_runtime
+├─ 0.026 comp
+│  ├─ 0.006 comp_small
+│  └─ 0.079 comp_large
+├─ 0.006 comm
+│  └─ 0.006 MPI_Gather
+├─ 0.000 correctness_check
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 0.080 MPI_Comm_dup
+```
+
 ### 3b. Collect Metadata
 
 Have the following code in your programs to collect metadata:
@@ -425,6 +443,10 @@ adiak::value("scalability", scalability); // The scalability of your algorithm. 
 adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
 adiak::value("implementation_source", implementation_source); // Where you got the source code of your algorithm. choices: ("online", "ai", "handwritten").
 ```
+
+
+Bitonic Metadata:
+
 
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
