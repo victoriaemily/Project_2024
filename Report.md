@@ -471,7 +471,22 @@ adiak::value("implementation_source", implementation_source); // Where you got t
 
 
 Bitonic Metadata:
-
+The metadata collected for bitonic sort includes the following information:
+```
+launchdate: 1729117054,
+libraries: [/scratch/group/csce435-f24/Caliper/caliper/lib],
+cmdline: [./mergesort, 65536, 4, Random],
+algorithm: bitonic_sort,
+programming_model: mpi, 
+data_type: int, 
+size_of_data_type: 4, 
+input_size: 65536, 
+input_type: Random
+num_procs: 4
+scalability: strong
+group_num: 20
+implementation_source: handwritten
+```
 
 Sample Sort Metadata:
 ```
