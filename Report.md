@@ -425,6 +425,11 @@ Bitonic Calltree:
 
 Sample Sort Calltree:
 
+```
+
+
+```
+
 
 ### 3b. Collect Metadata
 
@@ -453,6 +458,7 @@ Bitonic Metadata:
 
 Sample Sort Metadata:
 
+```
  adiak::init(NULL);
  adiak::launchdate();
  adiak::libraries();
@@ -469,6 +475,7 @@ Sample Sort Metadata:
  adiak::value("group_num", "20"); 
  adiak::value("implementation_source", "handwritten"); 
 
+```
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
 ### **See the `Builds/` directory to find the correct Caliper configurations to get the performance metrics.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
