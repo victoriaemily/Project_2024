@@ -474,7 +474,6 @@ Bitonic Metadata:
 
 
 Sample Sort Metadata:
-
 ```
 cali.caliper.version: 2.11.0
 mpi.world.size: 32
@@ -504,7 +503,6 @@ num_tasks: 32
 scalability: strong
 group_num: 20
 implementation_source: handwritten
-
 ```
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
