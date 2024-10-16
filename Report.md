@@ -426,7 +426,24 @@ Bitonic Calltree:
 Sample Sort Calltree:
 
 ```
-
+30.491 main
+├─ 0.000 MPI_Init
+├─ 0.228 data_init_runtime
+├─ 7.454 comp
+│  ├─ 3.980 comp_small
+│  └─ 3.474 comp_large
+├─ 1.377 comm
+│  ├─ 0.021 comm_small
+│  │  ├─ 0.004 MPI_Gather
+│  │  └─ 0.016 MPI_Bcast
+│  └─ 1.356 comm_large
+│     ├─ 0.015 MPI_Alltoall
+│     └─ 0.222 MPI_Alltoallv
+├─ 0.115 correctness_check
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 19.820 MPI_Comm_dup
 
 ```
 
@@ -467,10 +484,10 @@ Sample Sort Metadata:
  adiak::value("algorithm", "sample_sort");
  adiak::value("programming_model", "mpi");
  adiak::value("data_type", "int");
- adiak::value("size_of_data_type", sizeof(int));
- adiak::value("input_size", input_size);
- adiak::value("input_type", input_type);
- adiak::value("num_tasks", num_tasks); 
+ adiak::value("size_of_data_type", 4);
+ adiak::value("input_size", 268435456);
+ adiak::value("input_type", Random);
+ adiak::value("num_tasks", 32); 
  adiak::value("scalability", "strong"); 
  adiak::value("group_num", "20"); 
  adiak::value("implementation_source", "handwritten"); 
