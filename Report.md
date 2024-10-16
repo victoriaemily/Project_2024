@@ -476,21 +476,36 @@ Bitonic Metadata:
 Sample Sort Metadata:
 
 ```
- adiak::init(NULL);
- adiak::launchdate();
- adiak::libraries();
- adiak::cmdline();
- adiak::clustername();
- adiak::value("algorithm", "sample_sort");
- adiak::value("programming_model", "mpi");
- adiak::value("data_type", "int");
- adiak::value("size_of_data_type", 4);
- adiak::value("input_size", 268435456);
- adiak::value("input_type", Random);
- adiak::value("num_tasks", 32); 
- adiak::value("scalability", "strong"); 
- adiak::value("group_num", "20"); 
- adiak::value("implementation_source", "handwritten"); 
+
+cali.caliper.version: 2.11.0
+mpi.world.size: 32
+spot.metrics: min#inclusive#sum#time.duration, max#inclusive#...
+spot.timeseries.metrics: (not provided)
+spot.format.version: 2
+spot.options: time.variance, profile.mpi, node.order, region.count
+spot.channels: regionprofile
+cali.channel: spot
+spot:node.order: true
+spot:output: p32-a268435456.cali
+spot:profile.mpi: true
+spot:region.count: true
+spot:time.exclusive: true
+spot:time.variance: true
+launchdate: 1729094595
+libraries: [/scratch/group/csce435-f24/Caliper/caliper/lib]
+cmdline: [./samplesort, 268435456, 32, Random]
+cluster: c
+algorithm: sample_sort
+programming_model: mpi
+data_type: int
+size_of_data_type: 4
+input_size: 268435456
+input_type: Random
+num_tasks: 32
+scalability: strong
+group_num: 20
+implementation_source: handwritten
+
 
 ```
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
