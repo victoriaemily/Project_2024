@@ -447,6 +447,26 @@ Sample Sort Calltree:
 
 ```
 
+Merge Sort Calltree:
+
+```
+2.422 main
+├─ 0.000 MPI_Init
+├─ 0.091 data_init_runtime
+├─ 0.017 comm
+│  ├─ 0.012 MPI_Barrier
+│  └─ 0.005 comm_large
+│     ├─ 0.004 MPI_Scatter
+│     └─ 0.001 MPI_Gather
+├─ 0.048 comp
+│  └─ 0.048 comp_large
+├─ 0.016 correctness_check
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 0.674 MPI_Comm_dup
+
+```
 
 ### 3b. Collect Metadata
 
@@ -518,6 +538,39 @@ num_tasks: 32
 scalability: strong
 group_num: 20
 implementation_source: handwritten
+```
+
+Merge Sort Metadata:
+```
+cali.caliper.version: 2.11.0
+mpi.world.size: 32
+spot.metrics: min#inclusive#sum#time.duration, max#inclusive#...
+spot.timeseries.metrics: (not provided)
+spot.format.version: 2
+spot.options: time.variance, profile.mpi, node.order, region.count
+spot.channels: regionprofile
+cali.channel: spot
+spot:node.order: true
+spot:output: p32-a4194304.cali
+spot:profile.mpi: true
+spot:region.count: true
+spot:time.exclusive: true
+spot:time.variance: true
+launchdate: 1729123305
+libraries: [/scratch/group/csce435-f24/Caliper/caliper/li...]
+cmdline: [./mergesort, 4194304, 32, random]
+cluster: c
+algorithm: merge
+programming_model: mpi
+data_type: int
+size_of_data_type: 4
+input_size: 4194304
+input_type: random
+num_procs: 32
+scalability: strong
+group_num: 20
+implementation_source: handwritten
+
 ```
 They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
 
