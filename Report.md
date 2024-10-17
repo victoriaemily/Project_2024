@@ -405,6 +405,7 @@ CALI_MARK_END("comp");
 └─ 0.440 correctness_check
 ```
 
+### Implementations
 
 Bitonic Calltree:
 ```
@@ -466,6 +467,26 @@ Merge Sort Calltree:
 ├─ 0.000 MPI_Finalized
 └─ 0.674 MPI_Comm_dup
 
+```
+
+Radix Sort Calitree
+
+```
+1.664 main
+├─ 0.000 MPI_Init
+├─ 0.000 data_init_runtime
+├─ 0.060 comp
+│  ├─ 0.000 comp_small
+│  └─ 0.060 comm
+│     ├─ 0.054 comm_small
+│     │  └─ 0.054 MPI_Alltoall
+│     └─ 0.006 comm_large
+│        └─ 0.006 MPI_Alltoallv
+├─ 0.000 correctness_check
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 0.000 MPI_Comm_dup
 ```
 
 ### 3b. Collect Metadata
@@ -567,6 +588,39 @@ size_of_data_type: 4
 input_size: 4194304
 input_type: random
 num_procs: 32
+scalability: strong
+group_num: 20
+implementation_source: handwritten
+
+```
+
+Radix Sort
+```
+cali.caliper.version: 2.11.0
+mpi.world.size: 32
+spot.metrics: min#inclusive#sum#time.duration, max#inclusive#sum#time.duration, avg#inclusive#sum#time.duration
+spot.timeseries.metrics: true
+spot.format.version: 2
+spot.options: time.variance, profile.mpi, node.order, region.count, spot:output
+spot.channels: regionprofile
+cali.channel: spot
+spot:node.order: true
+spot:output: p32-a1024.cali
+spot:profile.mpi: true
+spot:region.count: true
+spot:time.exclusive: true
+spot:time.variance: true
+launchdate: 1728970597
+libraries: [/scratch/group/csce435-f24/Caliper/caliper/libcaliper.so]
+cmdline: [./radixsort, 1024, Random]
+cluster: c
+algorithm: radix_sort
+programming_model: mpi
+data_type: int
+size_of_data_type: 4
+input_size: 1024
+input_type: Random
+num_tasks: 32
 scalability: strong
 group_num: 20
 implementation_source: handwritten
@@ -809,6 +863,51 @@ Main Function:
 8. Global Sorting: The root process performs the final bitonic sort on the globally collected data. The entire dataset is now sorted using the bitonic algorithm.
 9. Correctness Check: Verifies that the sorted data is correctly ordered using std::is_sorted(). Checked by root process.
 10. MPI Finalize: Cleans up and shuts down the MPI environment after program completion.
+
+```
+
+Radix Sort
+```
+Initialization:
+MPI is initialized, and process ranks are retrieved.
+Metadata about the run is recorded using Adiak.
+
+Input Generation:
+Each process generates a portion of the input data based on the user-specified input type (Sorted, Random, etc.).
+
+generateSortedData(size): Generates an array of integers in ascending order from 0 to size-1.
+generatePerturbedData(size): Perturbs the sorted array by randomly swapping 1% of its elements.
+generateRandomData(size): Generates an array of random integers.
+generateReverseSortedData(size): Generates an array of integers in descending order.
+
+Radix Sort Setup
+Bits per Pass: The program calculates how many bits are processed in each pass of Radix Sort. This is determined by the number of processes (num_tasks) and the available bits per integer (assumed to be 32 bits).
+Radix: The number of "bins" or buckets is determined by shifting 1 by the number of bits per pass.
+Total Passes: The number of passes required for sorting is calculated based on the bit width of integers.
+
+
+Parallel Radix Sort:
+Radix Sort is performed in parallel. Each process calculates the bits to sort and exchanges data with other processes during each pass.
+
+The program runs Radix Sort in parallel across multiple MPI processes.
+Loop Through Radix Passes: For each pass:
+Computation Phase (CALI_MARK_BEGIN("comp_small")):
+Each process determines which "bucket" or range of values each of its elements belongs to based on the current bit pass.
+Data is organized into local buckets, with each bucket targeting a specific MPI process.
+Communication Phase:
+Processes exchange data with one another to ensure that all elements destined for a particular process are sent to the correct destination.
+MPI_Alltoall() is used to exchange the number of elements each process will send/receive.
+MPI_Alltoallv() is used to exchange the actual data between processes.
+Local Data Update: After receiving data from other processes, each process updates its local data with the newly received elements.
+
+Correctness Verification:
+After sorting, each process verifies that its data is sorted.
+
+Profiling and Metadata:
+The algorithm is profiled using Caliper to measure computation and communication times. Metadata about the algorithm is also recorded using Adiak.
+
+Finalization:
+MPI is finalized, and the program terminates.
 
 ```
 

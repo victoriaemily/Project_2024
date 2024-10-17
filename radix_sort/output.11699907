@@ -1,0 +1,36 @@
+
+Inactive Modules:
+  1) UCX/1.9.0     2) numactl/2.0.13
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) binutils/2.35     2) zlib/1.2.11
+
+The following have been reloaded with a version change:
+  1) GCCcore/10.2.0 => GCCcore/8.3.0
+
+Lmod has detected the following error: The following module(s) are unknown:
+"caliper/2.7.0"
+
+Please check the spelling, capitalization or version number. Also try "module
+spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "caliper/2.7.0"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"adiak/0.1.1"
+
+Please check the spelling, capitalization or version number. Also try "module
+spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "adiak/0.1.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
