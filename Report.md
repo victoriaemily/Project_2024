@@ -787,27 +787,29 @@ Bitonic Sort Algorithm:
 ```
 Helper Functions:
 1. quicksort(std::vector<int>& arr): Uses standard library's std::sort to sort a given vector of integers.
-2. generateSortedData(int size): Generates a sorted vector of integers from 0 to size-1.
-3. generatePerturbedData(int size): Creates a sorted array and randomly swaps 1% of its elements to perturb the array.
-4. generateRandomData(int size): Produces a vector of random integers, each ranging from 0 to size-1
+2. generateSortedData(int size): Generates a sorted vector of integers from 0 to size - 1 using a for loop.
+3. generatePerturbedData(int size): Starts by creating a sorted vector. Then randomly swaps 1% of its elements to perturb the array.
+4. generateRandomData(int size): Produces a vector of random integers, each ranging from 0 to size - 1.
 5. generateReverseSortedData(int size): Generates a reverse-sorted vector of integers.
-6. generateRandomInput(int size, const std::string& input_type): A function that calls the appropriate data generation method based on the user-specified input type.
+6. generateRandomInput(int size, const std::string& input_type): A function that calls the appropriate data generation method (random, sorted, perturbed, reversed) based on the user-specified input type. Or throws error if input type not valid.
 
 Sorting Functions:
 1. compare_and_swap(std::vector<int>& data, int i, int j, bool ascending): Compares two elements and swaps them if they are not in the correct order (specified by ascending).
-2. bitonic_merge(std::vector<int>& data, int low, int cnt, bool ascending): Merges two sorted halves of the data in a bitonic manner. //todo
-3. bitonic_sort(std::vector<int>& data, int low, int cnt, bool ascending): Recursively sorts the data using the bitonic sorting algorithm. //todo
+2. bitonic_merge(std::vector<int>& data, int low, int cnt, bool ascending): This function merges two halves of a bitonic sequence by comparing and swapping elements based on the ascending flag. It first divides the sequence, performs comparisons, and recursively merges the subsequences until the sequence is fully sorted when cnt <= 1.
+3. bitonic_sort(std::vector<int>& data, int low, int cnt, bool ascending): This function recursively divides the data into two subsequences: one sorted in ascending order and the other in descending order. It then uses bitonic_merge to combine them into a fully sorted sequence, continuing until the entire array is sorted.
 
 Main Function:
-1. Initialization
-2. Input Handling
-3. Metadata Collection
-4. Data Generation with local_data
-5. Local sorting with quicksort helper function
-6. MPI Gather comm
-7. Global Sorting
-8. Correctness Check
-9. Finalize
+1. MPI Initialization: We use MPI_Init to start MPI, MPI_Comm_rank for the process ID, and MPI_Comm_size to find the number of processes.
+2. Metadata Collection: adiak statements – init, launchdate, libraries, cmdline, clustername – that will collect metadata from this algorithm.
+3. Input Handling: Handles command line arguments passed to the program – input_size, num_tasks, input_type. Also aborts if number of processors is less than 2.
+4. Metadata Collection: adiak statements – algorithm . . . implementation_source – that will collect metadata from this algorithm.
+5. Local Data Distribution: Using the generateRandomInput function, each process receives a segment of the total array that they will have to sort locally. The type of data will be according to the specified input type (random, sorted, perturbed, reversed).
+6. Local On Each Process: Sort each array with quicksort helper function.
+7. MPI Gather: Part of comm, it collects the locally sorted data from all processes and gathers it into the root process (task 0).
+8. Global Sorting: The root process performs the final bitonic sort on the globally collected data. The entire dataset is now sorted using the bitonic algorithm.
+9. Correctness Check: Verifies that the sorted data is correctly ordered using std::is_sorted(). Checked by root process.
+10. MPI Finalize: Cleans up and shuts down the MPI environment after program completion.
+
 ```
 
 ## 4. Performance evaluation
