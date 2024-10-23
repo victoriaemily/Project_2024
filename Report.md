@@ -950,6 +950,105 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 
 ### Plots and Analysis:
 
+- Bitonic Sort:
+
+### Strong Scaling - Input Sizes
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^16" src="BitonicSort/plots/strong_scaling_input_size_65536.png">
+</div>
+
+For the smallest input size in strong scaling, we don’t see much benefit in parallelization. There is a sharp increase in runtime until 32 processors, where reverse sorting plateaus, even as we increase processes. The 1% perturbed and sorted trendlines are the same except for a spike at 256 processes. Random’s time spikes until 128 processes and then hovers around 0.15 seconds. Given the trendlines are somewhat erratic for this graph, the communication and synchronization overheads probably outweigh the advantage of adding more processors at this size.
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^18" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^24" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^22" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^20" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^18" src="">
+</div>
+
+Placeholder
+
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="StrongScaling2^16" src="">
+</div>
+
+Placeholder
+
+### Weak Scaling
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling1" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling2" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling3" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling4" src="">
+</div>
+
+Placeholder
+
+### Strong Scaling - Speedup
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling1" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling1" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling1" src="">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScaling1" src="">
+</div>
+
+Placeholder
+
 - Radix Sort:
 
 ### Strong Scaling - Input Sizes
