@@ -961,64 +961,38 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 For the smallest input size in strong scaling, we don’t see much benefit in parallelization. There is a sharp increase in runtime until 32 processors, where reverse sorting plateaus, even as we increase processes. The 1% perturbed and sorted trendlines are the same except for a spike at 256 processes. Random’s time spikes until 128 processes and then hovers around 0.15 seconds. Given the trendlines are somewhat erratic for this graph, the communication and synchronization overheads probably outweigh the advantage of adding more processors at this size.
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^18" src="">
+  <img width="604" alt="StrongScaling2^18" src="BitonicSort/plots/strong_scaling_input_size_262144.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^24" src="">
+  <img width="604" alt="StrongScaling2^20" src="BitonicSort/plots/strong_scaling_input_size_1048576.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^22" src="">
+  <img width="604" alt="StrongScaling2^22" src="BitonicSort/plots/strong_scaling_input_size_4194304.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^20" src="">
+  <img width="604" alt="StrongScaling2^24" src="BitonicSort/plots/strong_scaling_input_size_16777216.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^18" src="">
+  <img width="604" alt="StrongScaling2^26" src="BitonicSort/plots/strong_scaling_input_size_67108864.png">
 </div>
 
 Placeholder
 
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^16" src="">
-</div>
-
-Placeholder
-
-### Weak Scaling
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="">
-</div>
-
-Placeholder
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling2" src="">
-</div>
-
-Placeholder
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling3" src="">
-</div>
-
-Placeholder
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling4" src="">
+  <img width="604" alt="StrongScaling2^28" src="BitonicSort/plots/strong_scaling_input_size_268435456.png">
 </div>
 
 Placeholder
@@ -1026,25 +1000,51 @@ Placeholder
 ### Strong Scaling - Speedup
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="">
+  <img width="604" alt="StrongScalingPerturbed" src="BitonicSort/plots/strong_scaling_speedup_input_type_1%_perturbed.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="">
+  <img width="604" alt="StrongScalingRandom" src="BitonicSort/plots/strong_scaling_speedup_input_type_Random.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="">
+  <img width="604" alt="StrongScalingReverseSorted" src="BitonicSort/plots/strong_scaling_speedup_input_type_ReverseSorted.png">
 </div>
 
 Placeholder
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="">
+  <img width="604" alt="StrongScalingSorted" src="BitonicSort/plots/strong_scaling_speedup_input_type_Sorted.png">
+</div>
+
+Placeholder
+
+### Weak Scaling
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScalingPerturbed" src="BitonicSort/plots/weak_scaling_input_type_1%_perturbed.png">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScalingRandom" src="BitonicSort/plots/weak_scaling_input_type_Random.png">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScalingReverseSorted" src="BitonicSort/plots/weak_scaling_input_type_ReverseSorted.png">
+</div>
+
+Placeholder
+
+<div style="background-color:white; padding:10px;">
+  <img width="604" alt="WeakScalingSorted" src="BitonicSort/plots/weak_scaling_input_type_Sorted.png">
 </div>
 
 Placeholder
