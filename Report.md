@@ -952,11 +952,15 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 - Merge Sort:
   
   Strong Scaling Plot for 2^16:
+  <p align="left">
   <img width="604" alt="StrongScaling2^16" src="https://github.com/user-attachments/assets/62472b93-08cc-466a-b1c3-aa06c140ed43">
+</p>
   	Generally, looking at the smallest input size of 2^16 for strong scaling, the performance seems to decrease in strong scaling efficiency as the number of processors increase. The performance seems to spike at around 400 		processors specifically for sorted input which could be due to some inefficiency or anomalies in the communication or workload distribution. After 400 processors, the performance does improve with a downward trend before 		leveling out. As the problem size is small, dividing it across a large number of processors (after 400) could mean that each process is handling a small amount of work. Thus, creating a situation where communciation and 		synchronization overhead will dominate. For the other input types, the random, reverse, and perturbed seem to have a more gradual scaling but also starts to degrade as the number of processors increase, specifically after 		around 200 processors as the time starts to rise quite steadily. Especially for small input sizes, the amount of work per process is relatively limited which dominates the synchronization costs. There could be a high 		synchronization overhead due to many processors working on the small problem. Also in the merging phase, the processors could need to wait for one another which could create larger times due to the smaller input size.
 
   Strong Scaling Plot for 2^22:
-  <img width="534" alt="StrongScaling2^22" src="https://github.com/user-attachments/assets/c891af4d-7b03-48c1-a36f-f0ba3ed69df2">
+  <p align="left">
+  <img width="604" alt="StrongScaling2^22" src="https://github.com/user-attachments/assets/c891af4d-7b03-48c1-a36f-f0ba3ed69df2">
+</p>
   	This graph contains the strong scaling for the input size of 2^22. Here, the degradation is more subtle than the 2^16 graph with the performance being stabilized after 200 processors. There are initial spikes before 200 		processors. However, even after the spikes, there is still a general increase as more processors are added which suggests that there could be more communication overhead. Synchronization could also be a issue when 			introducing more processors because the synchronization between the processors will add an layer of overhead. With more processors, the merging phase requires the processors to exchange their results and ensures that the 		merges are done in a specific order which will increase communication and synchronization costs.  Specifically for random input in processors before 200, there is instability being shown. The spikes should suggest that 		communication or data partitioning was inefficient and even after flattening out, the system does not gain much more speedup as the increasing amount of processors may add more overhead than what is saved in computation 		time. Moreover, the random input type data could be higher due to the load imbalances that are caused by the unpredictable nature of random data which could also make it harder to distribute the workload more evenly.
 
   Strong Scaling Plot for 2^28:
