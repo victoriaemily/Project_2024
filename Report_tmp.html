@@ -1,30 +1,395 @@
-# CSCE 435 Group project
+<!DOCTYPE html>
+<html>
+<head>
+<title>Report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
-## 0. Group number: 20
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 
-## 1. Group members:
-1. Victoria Chen
-2. Arielle Shaver
-3. Victoria Chiang
-4. Bonnie Wu
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
 
-We are using a group chat over text to communicate.
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
 
-## 2. Project topic (e.g., parallel sorting algorithms)
-Parallel Sorting Algorithms
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
 
-### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
 
-- Bitonic Sort (Bonnie): 
-- Sample Sort (Arielle):
-- Merge Sort (Victoria):
-- Radix Sort (Vic):
+body.showEditorSelection .code-line {
+	position: relative;
+}
 
-### 2b. Pseudocode for each parallel algorithm
-- For MPI programs, include MPI calls you will use to coordinate between processes
-- Radix Sort:
-```
-// Initialize MPI
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="csce-435-group-project">CSCE 435 Group project</h1>
+<h2 id="0-group-number-20">0. Group number: 20</h2>
+<h2 id="1-group-members">1. Group members:</h2>
+<ol>
+<li>Victoria Chen</li>
+<li>Arielle Shaver</li>
+<li>Victoria Chiang</li>
+<li>Bonnie Wu</li>
+</ol>
+<p>We are using a group chat over text to communicate.</p>
+<h2 id="2-project-topic-eg-parallel-sorting-algorithms">2. Project topic (e.g., parallel sorting algorithms)</h2>
+<p>Parallel Sorting Algorithms</p>
+<h3 id="2a-brief-project-description-what-algorithms-will-you-be-comparing-and-on-what-architectures">2a. Brief project description (what algorithms will you be comparing and on what architectures)</h3>
+<ul>
+<li>Bitonic Sort (Bonnie):</li>
+<li>Sample Sort (Arielle):</li>
+<li>Merge Sort (Victoria):</li>
+<li>Radix Sort (Vic):</li>
+</ul>
+<h3 id="2b-pseudocode-for-each-parallel-algorithm">2b. Pseudocode for each parallel algorithm</h3>
+<ul>
+<li>For MPI programs, include MPI calls you will use to coordinate between processes</li>
+<li>Radix Sort:</li>
+</ul>
+<pre class="hljs"><code><div>// Initialize MPI
 MPI_Init()
 Get the number of processes (n_procs)
 Get the rank of each process (rank)
@@ -62,12 +427,13 @@ MPI_Gather(local_data, sorted_array, root=0)
 // Finalize MPI (clean up and end the program)
 MPI_Finalize()
 
-```
-- Merge Sort:
-```
-    Main:  
+</div></code></pre>
+<ul>
+<li>Merge Sort:</li>
+</ul>
+<pre class="hljs"><code><div>    Main:  
         1. Initialize MPI - MPI_Init()
-            a. MPI_INIT(&argc, &argv)
+            a. MPI_INIT(&amp;argc, &amp;argv)
         2. Rank and size of MPI COMM_WORLD
             a. MPI_Comm_rank, MPI_Comm_size
         3. If rank == 0 then: read in the input array, split the input array into the number of processes part
@@ -93,9 +459,9 @@ MPI_Finalize()
     Merge Function: * merge two sorted halves of one array into a complete sorted single array*
         1. Set lh= to the start index to the left half, set i= to the start index for the temporary array (temp array), 
             set rh= to the starting index of the right half (ending index of the first half + 1)
-        2. While loop to start merging and compare the elements in both halves: * loop will finish after one half is processed* -> 
-            While (lh <= ending index of first half && rh <= ending index of that array portion needed to sort)
-                a. If current element array[lh] is <= to the current element in the right half so array[rh] we want to copy the array[lh] into the temp array at i and then increment the lh and the i
+        2. While loop to start merging and compare the elements in both halves: * loop will finish after one half is processed* -&gt; 
+            While (lh &lt;= ending index of first half &amp;&amp; rh &lt;= ending index of that array portion needed to sort)
+                a. If current element array[lh] is &lt;= to the current element in the right half so array[rh] we want to copy the array[lh] into the temp array at i and then increment the lh and the i
                 b. Else we want to do the opposite so array[rh] to temp array at i and increment the rh and the i
         3. Remaining elements will be copied:
             a. If there are elements in the right half leftover or the left it will be copied into the temp array 
@@ -104,17 +470,18 @@ MPI_Finalize()
             a. using a for loop and the indexes 
 
     MergeSort Function: *recursive merge sort algorithm without impacting any MPI*
-        1. Check if the starting index is less than the ending index of the array -> if LI < RI -> want to make sure the array 
+        1. Check if the starting index is less than the ending index of the array -&gt; if LI &lt; RI -&gt; want to make sure the array 
             has more than one element
                 a. Find the middle index: mid = (LI + RI) / 2, average of left and right index divided by 2
-                b. Recursively call mergeSort so it can sort the left half -> LI to mid, left index to mid index 
-                c. Recursively call mergeSort so it can sort the right half -> mid+1, RI, mid+1 index to right index
+                b. Recursively call mergeSort so it can sort the left half -&gt; LI to mid, left index to mid index 
+                c. Recursively call mergeSort so it can sort the right half -&gt; mid+1, RI, mid+1 index to right index
                 d. Merge Function called so we can combine it into a single sorted array 
 	
-```
-- Sample Sort:
-```
-Main Function:
+</div></code></pre>
+<ul>
+<li>Sample Sort:</li>
+</ul>
+<pre class="hljs"><code><div>Main Function:
 
     1. Get user input for data_type, size (total number of elements), and num_procs (number of processors).
 
@@ -124,8 +491,8 @@ Main Function:
        num_tasks = MPI_Comm_size(MPI_COMM_WORLD)  // Get the total number of processes available (num_tasks)
 
     3. // Check if there are enough tasks available
-       If num_tasks < 2:
-           Print "Need at least two MPI tasks. Quitting..."
+       If num_tasks &lt; 2:
+           Print &quot;Need at least two MPI tasks. Quitting...&quot;
            MPI_Abort(MPI_COMM_WORLD, error_code = -1)
            Exit program
 
@@ -136,8 +503,8 @@ Main Function:
 
     6. // Master Process
        If task_id == MASTER:
-           Print "Parallel samplesort with master-worker has started with", num_tasks, "tasks."
-           Print "Initializing data..."
+           Print &quot;Parallel samplesort with master-worker has started with&quot;, num_tasks, &quot;tasks.&quot;
+           Print &quot;Initializing data...&quot;
 
            // Generate input data of specified data_type
            Generate size amount of input_data of type data_type 
@@ -192,7 +559,7 @@ Main Function:
        local_bucket = recv_data  // This is the bucket each process will sort
 
        // Sort the received bucket using iterative quicksort
-       Print "Task", task_id, "sorting its bucket..."
+       Print &quot;Task&quot;, task_id, &quot;sorting its bucket...&quot;
        QuickSort(local_bucket, length(local_bucket))
 
     8. // Gather sorted buckets back to the master
@@ -209,7 +576,7 @@ Main Function:
        If task_id == MASTER:
            // Concatenate all sorted buckets to get the final sorted data
            Final_sorted_data = concatenate(sorted_buckets)
-           Print "Parallel samplesort completed."
+           Print &quot;Parallel samplesort completed.&quot;
 
    10. // Finalize MPI environment
        MPI_Finalize()
@@ -230,14 +597,14 @@ QuickSort Function (arr, n):
         (low, high) = Pop(stack)
         
         // Partition the array
-        If low < high:
+        If low &lt; high:
             // Choose the pivot element as the last element
             pivot = arr[high]
             i = low - 1
 
             // Rearrange elements based on pivot
             For j from low to high - 1:
-                If arr[j] <= pivot:
+                If arr[j] &lt;= pivot:
                     i = i + 1
                     Swap arr[i] and arr[j]
 
@@ -247,19 +614,18 @@ QuickSort Function (arr, n):
 
             // Push the left and right subarrays onto the stack
             // Left subarray: elements less than the pivot
-            If (pivot_index - 1) > low:
+            If (pivot_index - 1) &gt; low:
                 Push (low, pivot_index - 1) onto stack
 
             // Right subarray: elements greater than the pivot
-            If (pivot_index + 1) < high:
+            If (pivot_index + 1) &lt; high:
                 Push (pivot_index + 1, high) onto stack
 
 End Function
 
-```
-Bitonic Sort
-```
-MAIN BEGIN
+</div></code></pre>
+<p>Bitonic Sort</p>
+<pre class="hljs"><code><div>MAIN BEGIN
     // Initialize MPI
     MPI_Init()
     
@@ -273,16 +639,16 @@ MAIN BEGIN
     MPI_Scatter()
     
     // Bitonic Sort process
-    for (i = 0; i < log(number processes); i++) {  // log(n) stages of sorting, also creates distance between partners as sorting progresses
-        for (j = i; j >= 0; j--) {      // Comparing pairs (ex: if i = 2, j takes the values 2, 1, and 0)
-            if ((process_rank >> (i + 1)) % 2 == 0 && (process_rank >> j) % 2 == 0) || ((process_rank >> (i + 1)) % 2 != 0 && (process_rank >> j) % 2 != 0){ 
+    for (i = 0; i &lt; log(number processes); i++) {  // log(n) stages of sorting, also creates distance between partners as sorting progresses
+        for (j = i; j &gt;= 0; j--) {      // Comparing pairs (ex: if i = 2, j takes the values 2, 1, and 0)
+            if ((process_rank &gt;&gt; (i + 1)) % 2 == 0 &amp;&amp; (process_rank &gt;&gt; j) % 2 == 0) || ((process_rank &gt;&gt; (i + 1)) % 2 != 0 &amp;&amp; (process_rank &gt;&gt; j) % 2 != 0){ 
 		// Use rightshift operator to determine which processes are swapping for the current stage of sorting (ascending or descending order)
                 // Both ranks are even or both are odd
                 Swap elements in ascending order (smaller rank will have smaller number)
                 (send maximum value to partner
                 receive minimum value from partner)
             } 
-            else if ((process_rank >> (i + 1)) % 2 != 0 && (process_rank >> j) % 2 != 0) {
+            else if ((process_rank &gt;&gt; (i + 1)) % 2 != 0 &amp;&amp; (process_rank &gt;&gt; j) % 2 != 0) {
                 // One rank is even and one is odd
                 Swap elements in descending order (vice versa to the ascending one)
                 (send minimum value to partner
@@ -297,52 +663,57 @@ MAIN BEGIN
     // Finalize MPI
     MPI_Finalize()
 MAIN END
-```
-
-### 2c. Evaluation plan - what and how will you measure and compare
-- Input sizes: 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28
-- Input types: Sorted, Random, Reverse sorted, 1% perturbed
-- Strong scaling (same problem size, increase number of processors/nodes)
-- Weak scaling (increase problem size, increase number of processors)
-- For number of processors: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
-
-
-For each algorithm (Bitonic Sort, Sample Sort, Merge Sort, Radix Sort), the following metrics will be measured:
-- **Execution Time**: Track the time required to complete the sort for various input sizes, input types, and processor counts.
-- **Speedup**: Compare the parallel execution time with the sequential baseline to assess the improvement for each algorithm.
-- **Efficiency**: Determine how effectively each algorithm uses additional processors by calculating speedup divided by the number of processors.
-
-#### Strong Scaling:
-- **Objective**: Analyze how each algorithm performs as the number of processors increases while keeping the input size constant.
-- **Method**: For a fixed input size (e.g., 2^24 elements), run the algorithm with 2, 4, 8, 16, 32, and more processors. We will measure execution time and calculate speedup and efficiency for each case.
-- **Comparison**: Evaluate how each algorithm’s execution time changes with different processor counts.
-
-#### Weak Scaling:
-- **Objective**: Evaluate how well each algorithm handles increasing input sizes as the number of processors grows proportionally, while ensuring each processor has sufficient work to do.
-
-- **Method**: For each input type (Sorted, Random, Reverse Sorted, 1% Perturbed), we will start with a small input size and a reasonable number of processors. As we increase the input size, we plan to proportionally increase the number of processors:
-  - 2^16 elements for 2 processors
-  - 2^18 elements for 4 processors
-  - 2^20 elements for 8 processors
-  - 2^22 elements for 16 processors
-  - 2^24 elements for 32 processors
-  - 2^26 elements for 64 processors
-  - 2^28 elements for 128 processors
-  - 2^28 elements for 256 processors
-  - 2^28 elements for 512 processors
-  - 2^28 elements for 1024 processors
-
-- **Comparison**: Measure the execution time for each combination of input size and processor count. The goal is to maintain a stable execution time as both the input size and the number of processors increase, showing strong weak scaling properties.
-
-
-### 3a. Caliper instrumentation
-Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper` 
-(same as lab2 build.sh) to collect caliper files for each experiment you run.
-
-Your Caliper annotations should result in the following calltree
-(use `Thicket.tree()` to see the calltree):
-```
-main
+</div></code></pre>
+<h3 id="2c-evaluation-plan---what-and-how-will-you-measure-and-compare">2c. Evaluation plan - what and how will you measure and compare</h3>
+<ul>
+<li>Input sizes: 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28</li>
+<li>Input types: Sorted, Random, Reverse sorted, 1% perturbed</li>
+<li>Strong scaling (same problem size, increase number of processors/nodes)</li>
+<li>Weak scaling (increase problem size, increase number of processors)</li>
+<li>For number of processors: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024</li>
+</ul>
+<p>For each algorithm (Bitonic Sort, Sample Sort, Merge Sort, Radix Sort), the following metrics will be measured:</p>
+<ul>
+<li><strong>Execution Time</strong>: Track the time required to complete the sort for various input sizes, input types, and processor counts.</li>
+<li><strong>Speedup</strong>: Compare the parallel execution time with the sequential baseline to assess the improvement for each algorithm.</li>
+<li><strong>Efficiency</strong>: Determine how effectively each algorithm uses additional processors by calculating speedup divided by the number of processors.</li>
+</ul>
+<h4 id="strong-scaling">Strong Scaling:</h4>
+<ul>
+<li><strong>Objective</strong>: Analyze how each algorithm performs as the number of processors increases while keeping the input size constant.</li>
+<li><strong>Method</strong>: For a fixed input size (e.g., 2^24 elements), run the algorithm with 2, 4, 8, 16, 32, and more processors. We will measure execution time and calculate speedup and efficiency for each case.</li>
+<li><strong>Comparison</strong>: Evaluate how each algorithm’s execution time changes with different processor counts.</li>
+</ul>
+<h4 id="weak-scaling">Weak Scaling:</h4>
+<ul>
+<li>
+<p><strong>Objective</strong>: Evaluate how well each algorithm handles increasing input sizes as the number of processors grows proportionally, while ensuring each processor has sufficient work to do.</p>
+</li>
+<li>
+<p><strong>Method</strong>: For each input type (Sorted, Random, Reverse Sorted, 1% Perturbed), we will start with a small input size and a reasonable number of processors. As we increase the input size, we plan to proportionally increase the number of processors:</p>
+<ul>
+<li>2^16 elements for 2 processors</li>
+<li>2^18 elements for 4 processors</li>
+<li>2^20 elements for 8 processors</li>
+<li>2^22 elements for 16 processors</li>
+<li>2^24 elements for 32 processors</li>
+<li>2^26 elements for 64 processors</li>
+<li>2^28 elements for 128 processors</li>
+<li>2^28 elements for 256 processors</li>
+<li>2^28 elements for 512 processors</li>
+<li>2^28 elements for 1024 processors</li>
+</ul>
+</li>
+<li>
+<p><strong>Comparison</strong>: Measure the execution time for each combination of input size and processor count. The goal is to maintain a stable execution time as both the input size and the number of processors increase, showing strong weak scaling properties.</p>
+</li>
+</ul>
+<h3 id="3a-caliper-instrumentation">3a. Caliper instrumentation</h3>
+<p>Please use the caliper build <code>/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper</code>
+(same as lab2 build.sh) to collect caliper files for each experiment you run.</p>
+<p>Your Caliper annotations should result in the following calltree
+(use <code>Thicket.tree()</code> to see the calltree):</p>
+<pre class="hljs"><code><div>main
 |_ data_init_X      # X = runtime OR io
 |_ comm
 |    |_ comm_small
@@ -351,43 +722,48 @@ main
 |    |_ comp_small
 |    |_ comp_large
 |_ correctness_check
-```
-
-Required region annotations:
-- `main` - top-level main function.
-    - `data_init_X` - the function where input data is generated or read in from file. Use *data_init_runtime* if you are generating the data during the program, and *data_init_io* if you are reading the data from a file.
-    - `correctness_check` - function for checking the correctness of the algorithm output (e.g., checking if the resulting data is sorted).
-    - `comm` - All communication-related functions in your algorithm should be nested under the `comm` region.
-      - Inside the `comm` region, you should create regions to indicate how much data you are communicating (i.e., `comm_small` if you are sending or broadcasting a few values, `comm_large` if you are sending all of your local values).
-      - Notice that auxillary functions like MPI_init are not under here.
-    - `comp` - All computation functions within your algorithm should be nested under the `comp` region.
-      - Inside the `comp` region, you should create regions to indicate how much data you are computing on (i.e., `comp_small` if you are sorting a few values like the splitters, `comp_large` if you are sorting values in the array).
-      - Notice that auxillary functions like data_init are not under here.
-    - `MPI_X` - You will also see MPI regions in the calltree if using the appropriate MPI profiling configuration (see **Builds/**). Examples shown below.
-
-All functions will be called from `main` and most will be grouped under either `comm` or `comp` regions, representing communication and computation, respectively. You should be timing as many significant functions in your code as possible. **Do not** time print statements or other insignificant operations that may skew the performance measurements.
-
-### **Nesting Code Regions Example** - all computation code regions should be nested in the "comp" parent code region as following:
-```
-CALI_MARK_BEGIN("comp");
-CALI_MARK_BEGIN("comp_small");
+</div></code></pre>
+<p>Required region annotations:</p>
+<ul>
+<li><code>main</code> - top-level main function.
+<ul>
+<li><code>data_init_X</code> - the function where input data is generated or read in from file. Use <em>data_init_runtime</em> if you are generating the data during the program, and <em>data_init_io</em> if you are reading the data from a file.</li>
+<li><code>correctness_check</code> - function for checking the correctness of the algorithm output (e.g., checking if the resulting data is sorted).</li>
+<li><code>comm</code> - All communication-related functions in your algorithm should be nested under the <code>comm</code> region.
+<ul>
+<li>Inside the <code>comm</code> region, you should create regions to indicate how much data you are communicating (i.e., <code>comm_small</code> if you are sending or broadcasting a few values, <code>comm_large</code> if you are sending all of your local values).</li>
+<li>Notice that auxillary functions like MPI_init are not under here.</li>
+</ul>
+</li>
+<li><code>comp</code> - All computation functions within your algorithm should be nested under the <code>comp</code> region.
+<ul>
+<li>Inside the <code>comp</code> region, you should create regions to indicate how much data you are computing on (i.e., <code>comp_small</code> if you are sorting a few values like the splitters, <code>comp_large</code> if you are sorting values in the array).</li>
+<li>Notice that auxillary functions like data_init are not under here.</li>
+</ul>
+</li>
+<li><code>MPI_X</code> - You will also see MPI regions in the calltree if using the appropriate MPI profiling configuration (see <strong>Builds/</strong>). Examples shown below.</li>
+</ul>
+</li>
+</ul>
+<p>All functions will be called from <code>main</code> and most will be grouped under either <code>comm</code> or <code>comp</code> regions, representing communication and computation, respectively. You should be timing as many significant functions in your code as possible. <strong>Do not</strong> time print statements or other insignificant operations that may skew the performance measurements.</p>
+<h3 id="nesting-code-regions-example---all-computation-code-regions-should-be-nested-in-the-%22comp%22-parent-code-region-as-following"><strong>Nesting Code Regions Example</strong> - all computation code regions should be nested in the &quot;comp&quot; parent code region as following:</h3>
+<pre class="hljs"><code><div>CALI_MARK_BEGIN(&quot;comp&quot;);
+CALI_MARK_BEGIN(&quot;comp_small&quot;);
 sort_pivots(pivot_arr);
-CALI_MARK_END("comp_small");
-CALI_MARK_END("comp");
+CALI_MARK_END(&quot;comp_small&quot;);
+CALI_MARK_END(&quot;comp&quot;);
 
 # Other non-computation code
 ...
 
-CALI_MARK_BEGIN("comp");
-CALI_MARK_BEGIN("comp_large");
+CALI_MARK_BEGIN(&quot;comp&quot;);
+CALI_MARK_BEGIN(&quot;comp_large&quot;);
 sort_values(arr);
-CALI_MARK_END("comp_large");
-CALI_MARK_END("comp");
-```
-
-### **Calltree Example**:
-```
-# MPI Mergesort
+CALI_MARK_END(&quot;comp_large&quot;);
+CALI_MARK_END(&quot;comp&quot;);
+</div></code></pre>
+<h3 id="calltree-example"><strong>Calltree Example</strong>:</h3>
+<pre class="hljs"><code><div># MPI Mergesort
 4.695 main
 ├─ 0.001 MPI_Comm_dup
 ├─ 0.000 MPI_Finalize
@@ -403,13 +779,10 @@ CALI_MARK_END("comp");
 │  └─ 0.909 comp_large
 ├─ 0.201 data_init_runtime
 └─ 0.440 correctness_check
-```
-
-### Implementations
-
-Bitonic Calltree:
-```
-1.720 main
+</div></code></pre>
+<h3 id="implementations">Implementations</h3>
+<p>Bitonic Calltree:</p>
+<pre class="hljs"><code><div>1.720 main
 ├─ 0.000 MPI_Init
 ├─ 0.000 data_init_runtime
 ├─ 0.026 comp
@@ -422,12 +795,9 @@ Bitonic Calltree:
 ├─ 0.000 MPI_Initialized
 ├─ 0.000 MPI_Finalized
 └─ 0.080 MPI_Comm_dup
-```
-
-Sample Sort Calltree:
-
-```
-30.491 main
+</div></code></pre>
+<p>Sample Sort Calltree:</p>
+<pre class="hljs"><code><div>30.491 main
 ├─ 0.000 MPI_Init
 ├─ 0.228 data_init_runtime
 ├─ 7.454 comp
@@ -446,12 +816,9 @@ Sample Sort Calltree:
 ├─ 0.000 MPI_Finalized
 └─ 19.820 MPI_Comm_dup
 
-```
-
-Merge Sort Calltree:
-
-```
-2.422 main
+</div></code></pre>
+<p>Merge Sort Calltree:</p>
+<pre class="hljs"><code><div>2.422 main
 ├─ 0.000 MPI_Init
 ├─ 0.091 data_init_runtime
 ├─ 0.017 comm
@@ -467,12 +834,9 @@ Merge Sort Calltree:
 ├─ 0.000 MPI_Finalized
 └─ 0.674 MPI_Comm_dup
 
-```
-
-Radix Sort Calitree
-
-```
-1.664 main
+</div></code></pre>
+<p>Radix Sort Calitree</p>
+<pre class="hljs"><code><div>1.664 main
 ├─ 0.000 MPI_Init
 ├─ 0.000 data_init_runtime
 ├─ 0.060 comp
@@ -487,34 +851,28 @@ Radix Sort Calitree
 ├─ 0.000 MPI_Initialized
 ├─ 0.000 MPI_Finalized
 └─ 0.000 MPI_Comm_dup
-```
-
-### 3b. Collect Metadata
-
-Have the following code in your programs to collect metadata:
-```
-adiak::init(NULL);
+</div></code></pre>
+<h3 id="3b-collect-metadata">3b. Collect Metadata</h3>
+<p>Have the following code in your programs to collect metadata:</p>
+<pre class="hljs"><code><div>adiak::init(NULL);
 adiak::launchdate();    // launch date of the job
 adiak::libraries();     // Libraries used
 adiak::cmdline();       // Command line used to launch the job
 adiak::clustername();   // Name of the cluster
-adiak::value("algorithm", algorithm); // The name of the algorithm you are using (e.g., "merge", "bitonic")
-adiak::value("programming_model", programming_model); // e.g. "mpi"
-adiak::value("data_type", data_type); // The datatype of input elements (e.g., double, int, float)
-adiak::value("size_of_data_type", size_of_data_type); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
-adiak::value("input_size", input_size); // The number of elements in input dataset (1000)
-adiak::value("input_type", input_type); // For sorting, this would be choices: ("Sorted", "ReverseSorted", "Random", "1_perc_perturbed")
-adiak::value("num_procs", num_procs); // The number of processors (MPI ranks)
-adiak::value("scalability", scalability); // The scalability of your algorithm. choices: ("strong", "weak")
-adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
-adiak::value("implementation_source", implementation_source); // Where you got the source code of your algorithm. choices: ("online", "ai", "handwritten").
-```
-
-
-Bitonic Metadata:
-The metadata collected for bitonic sort includes the following information:
-```
-launchdate: 1729117054,
+adiak::value(&quot;algorithm&quot;, algorithm); // The name of the algorithm you are using (e.g., &quot;merge&quot;, &quot;bitonic&quot;)
+adiak::value(&quot;programming_model&quot;, programming_model); // e.g. &quot;mpi&quot;
+adiak::value(&quot;data_type&quot;, data_type); // The datatype of input elements (e.g., double, int, float)
+adiak::value(&quot;size_of_data_type&quot;, size_of_data_type); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
+adiak::value(&quot;input_size&quot;, input_size); // The number of elements in input dataset (1000)
+adiak::value(&quot;input_type&quot;, input_type); // For sorting, this would be choices: (&quot;Sorted&quot;, &quot;ReverseSorted&quot;, &quot;Random&quot;, &quot;1_perc_perturbed&quot;)
+adiak::value(&quot;num_procs&quot;, num_procs); // The number of processors (MPI ranks)
+adiak::value(&quot;scalability&quot;, scalability); // The scalability of your algorithm. choices: (&quot;strong&quot;, &quot;weak&quot;)
+adiak::value(&quot;group_num&quot;, group_number); // The number of your group (integer, e.g., 1, 10)
+adiak::value(&quot;implementation_source&quot;, implementation_source); // Where you got the source code of your algorithm. choices: (&quot;online&quot;, &quot;ai&quot;, &quot;handwritten&quot;).
+</div></code></pre>
+<p>Bitonic Metadata:
+The metadata collected for bitonic sort includes the following information:</p>
+<pre class="hljs"><code><div>launchdate: 1729117054,
 libraries: [/scratch/group/csce435-f24/Caliper/caliper/lib],
 cmdline: [./mergesort, 65536, 4, Random],
 algorithm: bitonic_sort,
@@ -527,11 +885,9 @@ num_procs: 4,
 scalability: strong,
 group_num: 20,
 implementation_source: handwritten
-```
-
-Sample Sort Metadata:
-```
-cali.caliper.version: 2.11.0
+</div></code></pre>
+<p>Sample Sort Metadata:</p>
+<pre class="hljs"><code><div>cali.caliper.version: 2.11.0
 mpi.world.size: 32
 spot.metrics: min#inclusive#sum#time.duration, max#inclusive#...
 spot.timeseries.metrics: (not provided)
@@ -559,11 +915,9 @@ num_tasks: 32
 scalability: strong
 group_num: 20
 implementation_source: handwritten
-```
-
-Merge Sort Metadata:
-```
-cali.caliper.version: 2.11.0
+</div></code></pre>
+<p>Merge Sort Metadata:</p>
+<pre class="hljs"><code><div>cali.caliper.version: 2.11.0
 mpi.world.size: 32
 spot.metrics: min#inclusive#sum#time.duration, max#inclusive#...
 spot.timeseries.metrics: (not provided)
@@ -592,11 +946,9 @@ scalability: strong
 group_num: 20
 implementation_source: handwritten
 
-```
-
-Radix Sort
-```
-cali.caliper.version: 2.11.0
+</div></code></pre>
+<p>Radix Sort</p>
+<pre class="hljs"><code><div>cali.caliper.version: 2.11.0
 mpi.world.size: 32
 spot.metrics: min#inclusive#sum#time.duration, max#inclusive#sum#time.duration, avg#inclusive#sum#time.duration
 spot.timeseries.metrics: true
@@ -625,45 +977,43 @@ scalability: strong
 group_num: 20
 implementation_source: handwritten
 
-```
-They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
+</div></code></pre>
+<p>They will show up in the <code>Thicket.metadata</code> if the caliper file is read into Thicket.</p>
+<h3 id="see-the-builds-directory-to-find-the-correct-caliper-configurations-to-get-the-performance-metrics-they-will-show-up-in-the-thicketdataframe-when-the-caliper-file-is-read-into-thicket"><strong>See the <code>Builds/</code> directory to find the correct Caliper configurations to get the performance metrics.</strong> They will show up in the <code>Thicket.dataframe</code> when the Caliper file is read into Thicket.</h3>
+<h2 id="algorithm-descriptions">Algorithm Descriptions:</h2>
+<ul>
+<li>Sample Sort Algorithm:</li>
+</ul>
+<pre class="hljs"><code><div>    Helper Functions:
 
-### **See the `Builds/` directory to find the correct Caliper configurations to get the performance metrics.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
-
-## Algorithm Descriptions: 
-
-- Sample Sort Algorithm:
-```
-    Helper Functions:
-
-    1. void quicksort(std::vector<int>& arr);
+    1. void quicksort(std::vector&lt;int&gt;&amp; arr);
         - Sorts the array given as an argument using std::sort. 
 
-    2. std::vector<int> generateSortedData(int size);
+    2. std::vector&lt;int&gt; generateSortedData(int size);
         - Creates a vector called data.
         - Through a for loop adds values from 0 to inputted size
         to create a sorted array and returns it. 
 
-    3. std::vector<int> generatePerturbedData(int size);
+    3. std::vector&lt;int&gt; generatePerturbedData(int size);
         - Creates a vector called data using the generateSortedData function.
         - Calculates 1% of the size given. 
         - For 1% of the total size of values swap random elements in the
         array to generate perturbed data.
 
-    4. std::vector<int> generateRandomData(int size);
+    4. std::vector&lt;int&gt; generateRandomData(int size);
         - Creates a vector called data
         - Through a for loop from index 0 to inputted_size
         generates random data and adds it to vector.
 
-    5. std::vector<int> generateReverseSortedData(int size);
+    5. std::vector&lt;int&gt; generateReverseSortedData(int size);
         - Creates a vector called data.
         - Through a for loop adds values from inputted size - 1 to 0
         to create a reversed sorted array and returns it. 
 
-    6. std::vector<int> generateRandomInput(int size, const std::string& input_type)
+    6. std::vector&lt;int&gt; generateRandomInput(int size, const std::string&amp; input_type)
         - Uses the given input_type to decide which generation function to use.
         - Calls data generation function based on input_type. 
-          If the input_type = "Random", it will call generateRandomData(int size).
+          If the input_type = &quot;Random&quot;, it will call generateRandomData(int size).
     
     Main Function:
 
@@ -771,10 +1121,11 @@ They will show up in the `Thicket.metadata` if the caliper file is read into Thi
     14. Finalizing MPI
         The MPI environment is finalized, marking the end of the program.
 
-```
-- Merge Sort Algorithm:
-```
-	Sorting Functions:
+</div></code></pre>
+<ul>
+<li>Merge Sort Algorithm:</li>
+</ul>
+<pre class="hljs"><code><div>	Sorting Functions:
 	1. void merge(int *arr1, int *arr2, int LI, int mid, int RI):
 		- This function allows for combination of two sorted subarrays into one sorted array.
 		- It takes the left index, midpoint, right index to find the boundaries of each subarray within the original array.
@@ -836,21 +1187,20 @@ They will show up in the `Thicket.metadata` if the caliper file is read into Thi
 	14. Finalize and Cleanup
 		- Free all memory allocated areas
 	 	- Call MPI_Finalize() to finalize the MPI environment, finishing the program.
-```
-Bitonic Sort Algorithm:
-```
-Helper Functions:
-1. quicksort(std::vector<int>& arr): Uses standard library's std::sort to sort a given vector of integers.
+</div></code></pre>
+<p>Bitonic Sort Algorithm:</p>
+<pre class="hljs"><code><div>Helper Functions:
+1. quicksort(std::vector&lt;int&gt;&amp; arr): Uses standard library's std::sort to sort a given vector of integers.
 2. generateSortedData(int size): Generates a sorted vector of integers from 0 to size - 1 using a for loop.
 3. generatePerturbedData(int size): Starts by creating a sorted vector. Then randomly swaps 1% of its elements to perturb the array.
 4. generateRandomData(int size): Produces a vector of random integers, each ranging from 0 to size - 1.
 5. generateReverseSortedData(int size): Generates a reverse-sorted vector of integers.
-6. generateRandomInput(int size, const std::string& input_type): A function that calls the appropriate data generation method (random, sorted, perturbed, reversed) based on the user-specified input type. Or throws error if input type not valid.
+6. generateRandomInput(int size, const std::string&amp; input_type): A function that calls the appropriate data generation method (random, sorted, perturbed, reversed) based on the user-specified input type. Or throws error if input type not valid.
 
 Sorting Functions:
-1. compare_and_swap(std::vector<int>& data, int i, int j, bool ascending): Compares two elements and swaps them if they are not in the correct order (specified by ascending).
-2. bitonic_merge(std::vector<int>& data, int low, int cnt, bool ascending): This function merges two halves of a bitonic sequence by comparing and swapping elements based on the ascending flag. It first divides the sequence, performs comparisons, and recursively merges the subsequences until the sequence is fully sorted when cnt <= 1.
-3. bitonic_sort(std::vector<int>& data, int low, int cnt, bool ascending): This function recursively divides the data into two subsequences: one sorted in ascending order and the other in descending order. It then uses bitonic_merge to combine them into a fully sorted sequence, continuing until the entire array is sorted.
+1. compare_and_swap(std::vector&lt;int&gt;&amp; data, int i, int j, bool ascending): Compares two elements and swaps them if they are not in the correct order (specified by ascending).
+2. bitonic_merge(std::vector&lt;int&gt;&amp; data, int low, int cnt, bool ascending): This function merges two halves of a bitonic sequence by comparing and swapping elements based on the ascending flag. It first divides the sequence, performs comparisons, and recursively merges the subsequences until the sequence is fully sorted when cnt &lt;= 1.
+3. bitonic_sort(std::vector&lt;int&gt;&amp; data, int low, int cnt, bool ascending): This function recursively divides the data into two subsequences: one sorted in ascending order and the other in descending order. It then uses bitonic_merge to combine them into a fully sorted sequence, continuing until the entire array is sorted.
 
 Main Function:
 1. MPI Initialization: We use MPI_Init to start MPI, MPI_Comm_rank for the process ID, and MPI_Comm_size to find the number of processes.
@@ -864,11 +1214,9 @@ Main Function:
 9. Correctness Check: Verifies that the sorted data is correctly ordered using std::is_sorted(). Checked by root process.
 10. MPI Finalize: Cleans up and shuts down the MPI environment after program completion.
 
-```
-
-Radix Sort
-```
-Initialization:
+</div></code></pre>
+<p>Radix Sort</p>
+<pre class="hljs"><code><div>Initialization:
 MPI is initialized, and process ranks are retrieved.
 Metadata about the run is recorded using Adiak.
 
@@ -882,7 +1230,7 @@ generateReverseSortedData(size): Generates an array of integers in descending or
 
 Radix Sort Setup
 Bits per Pass: The program calculates how many bits are processed in each pass of Radix Sort. This is determined by the number of processes (num_tasks) and the available bits per integer (assumed to be 32 bits).
-Radix: The number of "bins" or buckets is determined by shifting 1 by the number of bits per pass.
+Radix: The number of &quot;bins&quot; or buckets is determined by shifting 1 by the number of bits per pass.
 Total Passes: The number of passes required for sorting is calculated based on the bit width of integers.
 
 
@@ -891,8 +1239,8 @@ Radix Sort is performed in parallel. Each process calculates the bits to sort an
 
 The program runs Radix Sort in parallel across multiple MPI processes.
 Loop Through Radix Passes: For each pass:
-Computation Phase (CALI_MARK_BEGIN("comp_small")):
-Each process determines which "bucket" or range of values each of its elements belongs to based on the current bit pass.
+Computation Phase (CALI_MARK_BEGIN(&quot;comp_small&quot;)):
+Each process determines which &quot;bucket&quot; or range of values each of its elements belongs to based on the current bit pass.
 Data is organized into local buckets, with each bucket targeting a specific MPI process.
 Communication Phase:
 Processes exchange data with one another to ensure that all elements destined for a particular process are sent to the correct destination.
@@ -909,231 +1257,185 @@ The algorithm is profiled using Caliper to measure computation and communication
 Finalization:
 MPI is finalized, and the program terminates.
 
-```
-
-## 4. Performance evaluation
-
-Include detailed analysis of computation performance, communication performance. 
-Include figures and explanation of your analysis.
-
-### 4a. Vary the following parameters
-For input_size's:
-- 2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28
-
-For input_type's:
-- Sorted, Random, Reverse sorted, 1%perturbed
-
-MPI: num_procs:
-- 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
-
-This should result in 4x7x10=280 Caliper files for your MPI experiments.
-
-### 4b. Hints for performance analysis
-
-To automate running a set of experiments, parameterize your program.
-
-- input_type: "Sorted" could generate a sorted input to pass into your algorithms
-- algorithm: You can have a switch statement that calls the different algorithms and sets the Adiak variables accordingly
-- num_procs: How many MPI ranks you are using
-
-When your program works with these parameters, you can write a shell script 
-that will run a for loop over the parameters above (e.g., on 64 processors, 
-perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).  
-
-### 4c. You should measure the following performance metrics
-- `Time`
-    - Min time/rank
-    - Max time/rank
-    - Avg time/rank
-    - Total time
-    - Variance time/rank
-
-### Plots and Analysis:
-
-- Radix Sort:
-
-### Strong Scaling - Input Sizes
-
+</div></code></pre>
+<h2 id="4-performance-evaluation">4. Performance evaluation</h2>
+<p>Include detailed analysis of computation performance, communication performance.
+Include figures and explanation of your analysis.</p>
+<h3 id="4a-vary-the-following-parameters">4a. Vary the following parameters</h3>
+<p>For input_size's:</p>
+<ul>
+<li>2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28</li>
+</ul>
+<p>For input_type's:</p>
+<ul>
+<li>Sorted, Random, Reverse sorted, 1%perturbed</li>
+</ul>
+<p>MPI: num_procs:</p>
+<ul>
+<li>2, 4, 8, 16, 32, 64, 128, 256, 512, 1024</li>
+</ul>
+<p>This should result in 4x7x10=280 Caliper files for your MPI experiments.</p>
+<h3 id="4b-hints-for-performance-analysis">4b. Hints for performance analysis</h3>
+<p>To automate running a set of experiments, parameterize your program.</p>
+<ul>
+<li>input_type: &quot;Sorted&quot; could generate a sorted input to pass into your algorithms</li>
+<li>algorithm: You can have a switch statement that calls the different algorithms and sets the Adiak variables accordingly</li>
+<li>num_procs: How many MPI ranks you are using</li>
+</ul>
+<p>When your program works with these parameters, you can write a shell script
+that will run a for loop over the parameters above (e.g., on 64 processors,
+perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).</p>
+<h3 id="4c-you-should-measure-the-following-performance-metrics">4c. You should measure the following performance metrics</h3>
+<ul>
+<li><code>Time</code>
+<ul>
+<li>Min time/rank</li>
+<li>Max time/rank</li>
+<li>Avg time/rank</li>
+<li>Total time</li>
+<li>Variance time/rank</li>
+</ul>
+</li>
+</ul>
+<h3 id="plots-and-analysis">Plots and Analysis:</h3>
+<ul>
+<li>Radix Sort:</li>
+</ul>
+<h3 id="strong-scaling---input-sizes">Strong Scaling - Input Sizes</h3>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^28" src="radix_sort/plots/strong_scaling_input_size_268435456.0.png">
+  <img width="604" alt="StrongScaling2^28" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_268435456.0.png">
 </div>
-
-The plot shows that for a very large input size, increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors. Past this point, performance stabilizes or worsens (but very slightly), indicating that further increases in the number of processors offer diminishing returns. The different input types show similar performance patterns, suggesting that for large inputs, the sorting state of the data doesn't really impact scalability.
-
+<p>The plot shows that for a very large input size, increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors. Past this point, performance stabilizes or worsens (but very slightly), indicating that further increases in the number of processors offer diminishing returns. The different input types show similar performance patterns, suggesting that for large inputs, the sorting state of the data doesn't really impact scalability.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^26" src="radix_sort/plots/strong_scaling_input_size_67108864.0.png">
+  <img width="604" alt="StrongScaling2^26" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_67108864.0.png">
 </div>
-
-This graph exhibits a similar pattern to the above graph. Increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors.
-However, 1% perturbed does have a slighter higher execution time at the highest processor count. This could be due to increased irregularity in the distribution of the data.
-
+<p>This graph exhibits a similar pattern to the above graph. Increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors.
+However, 1% perturbed does have a slighter higher execution time at the highest processor count. This could be due to increased irregularity in the distribution of the data.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^24" src="radix_sort/plots/strong_scaling_input_size_16777216.0.png">
+  <img width="604" alt="StrongScaling2^24" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_16777216.0.png">
 </div>
-
-This graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. This is likely due to overwhelming communication and synchronization overheads. These factors can cause certain input types to become less efficient as more processors are used.
-Interestingly enough, 1% perturbed comes out as the winner with the highest number of processors with the lowest execution count, while random has the largest computational time.
-
+<p>This graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. This is likely due to overwhelming communication and synchronization overheads. These factors can cause certain input types to become less efficient as more processors are used.
+Interestingly enough, 1% perturbed comes out as the winner with the highest number of processors with the lowest execution count, while random has the largest computational time.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^22" src="radix_sort/plots/strong_scaling_input_size_4194304.0.png">
+  <img width="604" alt="StrongScaling2^22" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_4194304.0.png">
 </div>
-
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. The points at which the different algorithms start to see diminishing returns differ very slightly, compared to the graph above. This is likely due to overwhelming communication and synchronization overheads. 
-This is more clearly shown that these factors can cause certain input types to become less efficient as more processors are used. 
-
+<p>Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. The points at which the different algorithms start to see diminishing returns differ very slightly, compared to the graph above. This is likely due to overwhelming communication and synchronization overheads.
+This is more clearly shown that these factors can cause certain input types to become less efficient as more processors are used.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^20" src="radix_sort/plots/strong_scaling_input_size_1048576.0.png">
+  <img width="604" alt="StrongScaling2^20" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_1048576.0.png">
 </div>
-
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-8.
-
+<p>Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-8.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^18" src="radix_sort/plots/strong_scaling_input_size_262144.0.png">
+  <img width="604" alt="StrongScaling2^18" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_262144.0.png">
 </div>
-
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-4.
-
-
+<p>Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-4.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^16" src="radix_sort/plots/strong_scaling_input_size_65536.0.png">
+  <img width="604" alt="StrongScaling2^16" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_input_size_65536.0.png">
 </div>
-
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2.
-
-Overall, the analysis of the strong scaling in regards to input size shows how, with smaller input sizes, there are diminishing returns (and even detrimental effects due to the increased overhead of processor communication and synchronization overheads) as processors are scaled up.
-
-### Weak Scaling
-
+<p>Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2.</p>
+<p>Overall, the analysis of the strong scaling in regards to input size shows how, with smaller input sizes, there are diminishing returns (and even detrimental effects due to the increased overhead of processor communication and synchronization overheads) as processors are scaled up.</p>
+<h3 id="weak-scaling">Weak Scaling</h3>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/weak_scaling_input_type_1_perturbed.png">
+  <img width="604" alt="WeakScaling1" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/weak_scaling_input_type_1_perturbed.png">
 </div>
-
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling2" src="radix_sort/plots/weak_scaling_input_type_Random.png">
+  <img width="604" alt="WeakScaling2" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/weak_scaling_input_type_Random.png">
 </div>
-
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling3" src="radix_sort/plots/weak_scaling_input_type_ReverseSorted.png">
+  <img width="604" alt="WeakScaling3" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/weak_scaling_input_type_ReverseSorted.png">
 </div>
-
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling4" src="radix_sort/plots/weak_scaling_input_type_Sorted.png">
+  <img width="604" alt="WeakScaling4" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/weak_scaling_input_type_Sorted.png">
 </div>
-
-Overall:
-For smaller input sizes, the time remains relatively stable as the number of processes increases, indicating good scalability. However, for the larger input sizes (like 67108864 and 268435456), there is an initial spike in execution time, which then declines as the number of processes increases. This suggests while smaller input sizes scale efficiently, larger input sizes face more significant overhead at least initially, likely due to communication and synchronization costs. As more processes are added, this overhead reduces, though the larger inputs still take longer to process compared to smaller ones.
-
-The trend persists across the different input types.
-
-### Strong Scaling - Speedup
-
+<p>Overall:
+For smaller input sizes, the time remains relatively stable as the number of processes increases, indicating good scalability. However, for the larger input sizes (like 67108864 and 268435456), there is an initial spike in execution time, which then declines as the number of processes increases. This suggests while smaller input sizes scale efficiently, larger input sizes face more significant overhead at least initially, likely due to communication and synchronization costs. As more processes are added, this overhead reduces, though the larger inputs still take longer to process compared to smaller ones.</p>
+<p>The trend persists across the different input types.</p>
+<h3 id="strong-scaling---speedup">Strong Scaling - Speedup</h3>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_1_perturbed.png">
+  <img width="604" alt="WeakScaling1" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_speedup_input_type_1_perturbed.png">
 </div>
 In this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_Random.png">
+  <img width="604" alt="WeakScaling1" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_speedup_input_type_Random.png">
 </div>
 Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_ReverseSorted.png">
+  <img width="604" alt="WeakScaling1" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_speedup_input_type_ReverseSorted.png">
 </div>
-
-Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
+<p>Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.</p>
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_Sorted.png">
+  <img width="604" alt="WeakScaling1" src="file:///Users/victoria/Documents/CSCE 435/Project_2024/radix_sort/plots/strong_scaling_speedup_input_type_Sorted.png">
 </div>
-
-Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
-Overall, random seems to benefit the most when increasing processors up to a certain amount, and has a higher processor count allowed before the speedup starts to weaken and decrease. Sorted has a steep dropoff in speedup very early on in processor count. 
-
-- Merge Sort:
-
-Strong Scaling Plot for 2^16:
+<p>Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.</p>
+<p>Overall, random seems to benefit the most when increasing processors up to a certain amount, and has a higher processor count allowed before the speedup starts to weaken and decrease. Sorted has a steep dropoff in speedup very early on in processor count.</p>
+<ul>
+<li>Merge Sort:</li>
+</ul>
+<p>Strong Scaling Plot for 2^16:</p>
   <p align="left">
   <img width="604" alt="StrongScaling2^16" src="https://github.com/user-attachments/assets/62472b93-08cc-466a-b1c3-aa06c140ed43">
 </p>
   	Generally, looking at the smallest input size of 2^16 for strong scaling, the performance seems to decrease in strong scaling efficiency as the number of processors increase. The performance seems to spike at around 400 		processors specifically for sorted input which could be due to some inefficiency or anomalies in the communication or workload distribution. After 400 processors, the performance does improve with a downward trend before 		leveling out. As the problem size is small, dividing it across a large number of processors (after 400) could mean that each process is handling a small amount of work. Thus, creating a situation where communciation and 		synchronization overhead will dominate. For the other input types, the random, reverse, and perturbed seem to have a more gradual scaling but also starts to degrade as the number of processors increase, specifically after 		around 200 processors as the time starts to rise quite steadily. Especially for small input sizes, the amount of work per process is relatively limited which dominates the synchronization costs. There could be a high 		synchronization overhead due to many processors working on the small problem. Also in the merging phase, the processors could need to wait for one another which could create larger times due to the smaller input size.
-
-&nbsp;
-
-  Strong Scaling Plot for 2^22:
+<p> </p>
+<p>Strong Scaling Plot for 2^22:</p>
   <p align="left">
   <img width="604" alt="StrongScaling2^22" src="https://github.com/user-attachments/assets/c891af4d-7b03-48c1-a36f-f0ba3ed69df2">
 </p>
   	This graph contains the strong scaling for the input size of 2^22. Here, the degradation is more subtle than the 2^16 graph with the performance being stabilized after 200 processors. There are initial spikes before 200 		processors. However, even after the spikes, there is still a general increase as more processors are added which suggests that there could be more communication overhead. Synchronization could also be a issue when 			introducing more processors because the synchronization between the processors will add an layer of overhead. With more processors, the merging phase requires the processors to exchange their results and ensures that the 		merges are done in a specific order which will increase communication and synchronization costs.  Specifically for random input in processors before 200, there is instability being shown. The spikes should suggest that 		communication or data partitioning was inefficient and even after flattening out, the system does not gain much more speedup as the increasing amount of processors may add more overhead than what is saved in computation 		time. Moreover, the random input type data could be higher due to the load imbalances that are caused by the unpredictable nature of random data which could also make it harder to distribute the workload more evenly.
-
-&nbsp;
-
-  Strong Scaling Plot for 2^28:
+<p> </p>
+<p>Strong Scaling Plot for 2^28:</p>
   <p align="left">
   <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/7c23485f-04c0-4795-bba8-b8849281bf64">
 </p>
 	This graph contains the strong scaling for the input size of 2^28. Here, there is less degradation as the larger input size allows for each process to handle more work so communication and computation ratio should be good. 		However, there seems to still be instability specifically at the spike before 200 processors especially for random input data which could be due to the unpredictable nature of random data. Even with improvement, after 200 		processors the trend starts to become constant which could mean that the synchronization costs start to outweigh the computational benefits of adding more processors. Therefore, additional processors do not significantly 		reduce overall time as they could be waiting on one another specifically in the merge phase.
-
-&nbsp;
-
-  Strong Scaling Speedup for 1%Perturbed:
-    <p align="left">
-  <img width="604" alt="StrongScalingSpeedupPerturbed" src="https://github.com/user-attachments/assets/d971a693-3ea3-41fe-a795-57fdaf149f88">
-  </p>
+<p> </p>
+<p>Strong Scaling Speedup for 1%Perturbed:
+<p align="left">
+<img width="604" alt="StrongScalingSpeedupPerturbed" src="https://github.com/user-attachments/assets/d971a693-3ea3-41fe-a795-57fdaf149f88"></p>
+  <p></p>
   	This graph is describing the strong scaling speedup for the 1% perturbed imput type. For the smaller processors, it seems that the speedup is a lot higher. The speedup seems to start off at 6 for the smallest input size 		which 	suggests that the parallelization should be working fine initially. Merge sort should be able to provide a substantial speedup early on when the input size is small and division of work is efficient. However after 		around 100 processors, the speedup starts to flatten out or degrade for all the input sizes, hovering at around 1.5 and 2 speedup for the larger input sizes. For the smaller input sizes, the speedup does drop quite sharply 		because the work per process becomes very small so synchronization/communication overhead can begin to dominate the runtime. In the larger input sizes, the speedup does remain quite constant at around 2 as the number of 		processors increase. This should suggest that there is pretty good speedup at the larger inputs. The flattening out of speedup could be because of the synchronization costs during the merging for merge sort. With the 		increase in input size, each merge should require more and more synchronization between processors, which could limit further speedup.
-
-
-&nbsp;
-
-  Strong Scaling Speedup for Random:
+<p> </p>
+<p>Strong Scaling Speedup for Random:</p>
   <p align="left">
   <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/f0734c6a-8b41-44ef-a043-a890d09f7a49">
 </p>
   	For this strong scaling speedup graph, the input type used is random and we see that it behaves quite similarly to the perturbed input graph, where the smaller input sizes are also able to show high speedup at around 7 with 	a small number of processors. Once again, the high initial speedup should be expected as merge sort should be able to easily parallelize the sorting phase when inputs are randomly distributed. However, when the number of 		processors start to grow, synchronization and communication costs increase which are shown in the trend in the graph. After around 100 processors, the speedup drops across all input sizes, with a particularly noticeable 		decrease for smaller inputs, where the speedup falls to around 1.5 or lower as the number of processors continues to increase. Quite similar to the perturbed input, the random input data also experiences significant load 		imbalance during the merging phase where some of the processors end up sitting idle, waiting for others to complete their merges. This could reduce the efficiency thus dropping the speedup. The larger input sizes do 		maintain better speedup than the smaller ones but still does not reflect the ideal condition of being linearly scaling with the increase in processors. This should show the communication bottlenecks which could be present 		in the 	merging phase which becomes more prominent as more processors are involved in merging random data.
-
-&nbsp;
-
-  Weak Scaling for 1%Perturbed:
+<p> </p>
+<p>Weak Scaling for 1%Perturbed:</p>
   <p align="left">
   <img width="604" alt="PerturbedWeakScaling" src="https://github.com/user-attachments/assets/32679090-4d11-447e-8c61-b437131a653f">
 </p>
 	This graph is looking at the weak scaling for the input type of 1% Perturbed. We see that there is a spike in time in the smaller number of processors. This could be due to initial overhead when only a few processors are 		used to sort and merge large chunks of data. This could also indicate that the overhead of both communication and task distribution is relatively significant when the problem size and number of processors are small. After 		the initial spike, the time per rank stabilitizes for all input sizes as the number of processors increase. This should indicate that once the system has enough processors to distribute the work efficiently, the execution 		time per process will start to stay constant even as input size and processors increase. This should suggest that there is pretty good weak scaling since the execution time does not really increase as the number of 			processors increase. This could be as this input type does not have much variability with weak scaling once the initial overhead is done. Both the sorting and the merging phases are distributed quite well across the 		processors.
-
-&nbsp;
-
-  Weak Scaling for Random:
+<p> </p>
+<p>Weak Scaling for Random:</p>
   <p align="left">
   <img width="604" alt="RandomWeakScaling" src="https://github.com/user-attachments/assets/1222bbff-aea5-4adb-b691-86a8a4576027">
 </p>
   	This graph is quite similar to the perturbed one, the random input type also has a similar spike when there are few processors being used. This seems to be fairly reasonable as with fewer processors, the communication and 		synchronization overhead should be higher relative to the computational work which should cause that initial spike. After that spike, as the number of processors increase, it seems to be stabilized regardless of the input 		size. This should indicate good weak scaling performance, as the algorithm is able to effectively distribute its workload and handle all the communication overhead with the increase in processors. The random input type does 	not seem to cause an issue for weak scaling, once the number of processors start to increase beyond that initial spike, the time stabilizies which should indicate efficiency.
+<h2 id="5-presentation">5. Presentation</h2>
+<p>Plots for the presentation should be as follows:</p>
+<ul>
+<li>For each implementation:
+<ul>
+<li>For each of comp_large, comm, and main:
+<ul>
+<li>Strong scaling plots for each input_size with lines for input_type (7 plots - 4 lines each)</li>
+<li>Strong scaling speedup plot for each input_type (4 plots)</li>
+<li>Weak scaling plots for each input_type (4 plots)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Analyze these plots and choose a subset to present and explain in your presentation.</p>
+<h2 id="6-final-report">6. Final Report</h2>
+<p>Submit a zip named <code>TeamX.zip</code> where <code>X</code> is your team number. The zip should contain the following files:</p>
+<ul>
+<li>Algorithms: Directory of source code of your algorithms.</li>
+<li>Data: All <code>.cali</code> files used to generate the plots seperated by algorithm/implementation.</li>
+<li>Jupyter notebook: The Jupyter notebook(s) used to generate the plots for the report.</li>
+<li>Report.md</li>
+</ul>
 
-  
-
-
-
-
-
-
-
-
-
-
-
-  
-## 5. Presentation
-Plots for the presentation should be as follows:
-- For each implementation:
-    - For each of comp_large, comm, and main:
-        - Strong scaling plots for each input_size with lines for input_type (7 plots - 4 lines each)
-        - Strong scaling speedup plot for each input_type (4 plots)
-        - Weak scaling plots for each input_type (4 plots)
-
-Analyze these plots and choose a subset to present and explain in your presentation.
-
-## 6. Final Report
-Submit a zip named `TeamX.zip` where `X` is your team number. The zip should contain the following files:
-- Algorithms: Directory of source code of your algorithms.
-- Data: All `.cali` files used to generate the plots seperated by algorithm/implementation.
-- Jupyter notebook: The Jupyter notebook(s) used to generate the plots for the report.
-- Report.md
+</body>
+</html>
