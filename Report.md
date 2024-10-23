@@ -950,12 +950,13 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 
 ### Plots and Analysis:
 - Merge Sort:
-  
-  Strong Scaling Plot for 2^16:
+
+Strong Scaling Plot for 2^16:
   <p align="left">
   <img width="604" alt="StrongScaling2^16" src="https://github.com/user-attachments/assets/62472b93-08cc-466a-b1c3-aa06c140ed43">
 </p>
   	Generally, looking at the smallest input size of 2^16 for strong scaling, the performance seems to decrease in strong scaling efficiency as the number of processors increase. The performance seems to spike at around 400 		processors specifically for sorted input which could be due to some inefficiency or anomalies in the communication or workload distribution. After 400 processors, the performance does improve with a downward trend before 		leveling out. As the problem size is small, dividing it across a large number of processors (after 400) could mean that each process is handling a small amount of work. Thus, creating a situation where communciation and 		synchronization overhead will dominate. For the other input types, the random, reverse, and perturbed seem to have a more gradual scaling but also starts to degrade as the number of processors increase, specifically after 		around 200 processors as the time starts to rise quite steadily. Especially for small input sizes, the amount of work per process is relatively limited which dominates the synchronization costs. There could be a high 		synchronization overhead due to many processors working on the small problem. Also in the merging phase, the processors could need to wait for one another which could create larger times due to the smaller input size.
+
 
   Strong Scaling Plot for 2^22:
   <p align="left">
@@ -963,21 +964,30 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 </p>
   	This graph contains the strong scaling for the input size of 2^22. Here, the degradation is more subtle than the 2^16 graph with the performance being stabilized after 200 processors. There are initial spikes before 200 		processors. However, even after the spikes, there is still a general increase as more processors are added which suggests that there could be more communication overhead. Synchronization could also be a issue when 			introducing more processors because the synchronization between the processors will add an layer of overhead. With more processors, the merging phase requires the processors to exchange their results and ensures that the 		merges are done in a specific order which will increase communication and synchronization costs.  Specifically for random input in processors before 200, there is instability being shown. The spikes should suggest that 		communication or data partitioning was inefficient and even after flattening out, the system does not gain much more speedup as the increasing amount of processors may add more overhead than what is saved in computation 		time. Moreover, the random input type data could be higher due to the load imbalances that are caused by the unpredictable nature of random data which could also make it harder to distribute the workload more evenly.
 
+
   Strong Scaling Plot for 2^28:
-  <img width="534" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/7c23485f-04c0-4795-bba8-b8849281bf64">
+  <p align="left">
+  <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/7c23485f-04c0-4795-bba8-b8849281bf64">
+</p>
 	This graph contains the strong scaling for the input size of 2^28. Here, there is less degradation as the larger input size allows for each process to handle more work so communication and computation ratio should be good. 		However, there seems to still be instability specifically at the spike before 200 processors especially for random input data which could be due to the unpredictable nature of random data. Even with improvement, after 200 		processors the trend starts to become constant which could mean that the synchronization costs start to outweigh the computational benefits of adding more processors. Therefore, additional processors do not significantly 		reduce overall time as they could be waiting on one another specifically in the merge phase.
 
+
   Strong Scaling Speedup for 1%Perturbed:
-  <img width="534" alt="StrongScalingSpeedupPerturbed" src="https://github.com/user-attachments/assets/d971a693-3ea3-41fe-a795-57fdaf149f88">
+    <p align="left">
+  <img width="604" alt="StrongScalingSpeedupPerturbed" src="https://github.com/user-attachments/assets/d971a693-3ea3-41fe-a795-57fdaf149f88">
+  </p>
   	This graph is describing the strong scaling speedup for the 1% perturbed imput type. For the smaller processors, it seems that the speedup is a lot higher. The speedup seems to start off at 6 for the smallest input size 		which 	suggests that the parallelization should be working fine initially. Merge sort should be able to provide a substantial speedup early on when the input size is small and division of work is efficient. However after 		around 100 processors, the speedup starts to flatten out or degrade for all the input sizes, hovering at around 1.5 and 2 speedup for the larger input sizes. For the smaller input sizes, the speedup does drop quite sharply 		because the work per process becomes very small so synchronization/communication overhead can begin to dominate the runtime. In the larger input sizes, the speedup does remain quite constant at around 2 as the number of 		processors increase. This should suggest that there is pretty good speedup at the larger inputs. The flattening out of speedup could be because of the synchronization costs during the merging for merge sort. With the 		increase in input size, each merge should require more and more synchronization between processors, which could limit further speedup.
+
 
   Strong Scaling Speedup for Random:
   <img width="534" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/f0734c6a-8b41-44ef-a043-a890d09f7a49">
   	For this strong scaling speedup graph, the input type used is random and we see that it behaves quite similarly to the perturbed input graph, where the smaller input sizes are also able to show high speedup at around 7 with 	a small number of processors. Once again, the high initial speedup should be expected as merge sort should be able to easily parallelize the sorting phase when inputs are randomly distributed. However, when the number of 		processors start to grow, synchronization and communication costs increase which are shown in the trend in the graph. After around 100 processors, the speedup drops across all input sizes, with a particularly noticeable 		decrease for smaller inputs, where the speedup falls to around 1.5 or lower as the number of processors continues to increase. Quite similar to the perturbed input, the random input data also experiences significant load 		imbalance during the merging phase where some of the processors end up sitting idle, waiting for others to complete their merges. This could reduce the efficiency thus dropping the speedup. The larger input sizes do 		maintain better speedup than the smaller ones but still does not reflect the ideal condition of being linearly scaling with the increase in processors. This should show the communication bottlenecks which could be present 		in the 	merging phase which becomes more prominent as more processors are involved in merging random data.
 
+
   Weak Scaling for 1%Perturbed:
   <img width="534" alt="PerturbedWeakScaling" src="https://github.com/user-attachments/assets/32679090-4d11-447e-8c61-b437131a653f">
 	This graph is looking at the weak scaling for the input type of 1% Perturbed. We see that there is a spike in time in the smaller number of processors. This could be due to initial overhead when only a few processors are 		used to sort and merge large chunks of data. This could also indicate that the overhead of both communication and task distribution is relatively significant when the problem size and number of processors are small. After 		the initial spike, the time per rank stabilitizes for all input sizes as the number of processors increase. This should indicate that once the system has enough processors to distribute the work efficiently, the execution 		time per process will start to stay constant even as input size and processors increase. This should suggest that there is pretty good weak scaling since the execution time does not really increase as the number of 			processors increase. This could be as this input type does not have much variability with weak scaling once the initial overhead is done. Both the sorting and the merging phases are distributed quite well across the 		processors.
+
 
   Weak Scaling for Random:
   <img width="534" alt="RandomWeakScaling" src="https://github.com/user-attachments/assets/1222bbff-aea5-4adb-b691-86a8a4576027">
