@@ -950,7 +950,7 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 
 ### Plots and Analysis:
 - Merge Sort:
-  ```
+  
   Strong Scaling Plot for 2^16:
   <img width="604" alt="StrongScaling2^16" src="https://github.com/user-attachments/assets/62472b93-08cc-466a-b1c3-aa06c140ed43">
   	Generally, looking at the smallest input size of 2^16 for strong scaling, the performance seems to decrease in strong scaling efficiency as the number of processors increase. The performance seems to spike at around 400 		processors specifically for sorted input which could be due to some inefficiency or anomalies in the communication or workload distribution. After 400 processors, the performance does improve with a downward trend before 		leveling out. As the problem size is small, dividing it across a large number of processors (after 400) could mean that each process is handling a small amount of work. Thus, creating a situation where communciation and 		synchronization overhead will dominate. For the other input types, the random, reverse, and perturbed seem to have a more gradual scaling but also starts to degrade as the number of processors increase, specifically after 		around 200 processors as the time starts to rise quite steadily. Especially for small input sizes, the amount of work per process is relatively limited which dominates the synchronization costs. There could be a high 		synchronization overhead due to many processors working on the small problem. Also in the merging phase, the processors could need to wait for one another which could create larger times due to the smaller input size.
@@ -979,7 +979,7 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
   <img width="534" alt="RandomWeakScaling" src="https://github.com/user-attachments/assets/1222bbff-aea5-4adb-b691-86a8a4576027">
   	This graph is quite similar to the perturbed one, the random input type also has a similar spike when there are few processors being used. This seems to be fairly reasonable as with fewer processors, the communication and 		synchronization overhead should be higher relative to the computational work which should cause that initial spike. After that spike, as the number of processors increase, it seems to be stabilized regardless of the input 		size. This should indicate good weak scaling performance, as the algorithm is able to effectively distribute its workload and handle all the communication overhead with the increase in processors. The random input type does 	not seem to cause an issue for weak scaling, once the number of processors start to increase beyond that initial spike, the time stabilizies which should indicate efficiency.
 
-  ```
+  
 
 
 
