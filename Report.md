@@ -964,7 +964,7 @@ For the smallest input size in strong scaling, we don’t see much benefit in pa
   <img width="604" alt="StrongScaling2^18" src="BitonicSort/plots/strong_scaling_input_size_262144.png">
 </div>
 
-Placeholder
+In this plot, we see a similar pattern as the 2^16 array, where there is a sharp increase until 32 processes and then a plateau. This time, the 1% perturbed and reverse sorted lines become steady, while the random and sorted lines are spiking at 256 processes. These irregularities could be because the input size is still relatively small, so the parallelization overheads are still outweighing the advantages of having more processes. However, we are beginning to see the data points stabilize as we increase the array size.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScaling2^20" src="BitonicSort/plots/strong_scaling_input_size_1048576.png">
@@ -1000,7 +1000,7 @@ Placeholder
 ### Strong Scaling - Speedup
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScalingPerturbed" src="BitonicSort/plots/strong_scaling_speedup_input_type_1%_perturbed.png">
+  <img width="604" alt="StrongScalingPerturbed" src="BitonicSort/plots/strong_scaling_speedup_input_type_1_perturbed.png">
 </div>
 
 Placeholder
@@ -1026,7 +1026,7 @@ Placeholder
 ### Weak Scaling
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScalingPerturbed" src="BitonicSort/plots/weak_scaling_input_type_1%_perturbed.png">
+  <img width="604" alt="WeakScalingPerturbed" src="BitonicSort/plots/weak_scaling_input_type_1_perturbed.png">
 </div>
 
 Placeholder
