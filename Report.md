@@ -1207,6 +1207,7 @@ Strong Scaling Plot for 2^16:
 </p>
   	This graph is quite similar to the perturbed one, the random input type also has a similar spike when there are few processors being used. This seems to be fairly reasonable as with fewer processors, the communication and 		synchronization overhead should be higher relative to the computational work which should cause that initial spike. After that spike, as the number of processors increase, it seems to be stabilized regardless of the input 		size. This should indicate good weak scaling performance, as the algorithm is able to effectively distribute its workload and handle all the communication overhead with the increase in processors. The random input type does 	not seem to cause an issue for weak scaling, once the number of processors start to increase beyond that initial spike, the time stabilizies which should indicate efficiency.
 
+&nbsp;
 
 - Sample Sort:
 
