@@ -1209,7 +1209,7 @@ Strong Scaling Plot for 2^16:
 
 &nbsp;
 
-- Sample Sort:
+### - Sample Sort:
 
 ### Strong Scaling 
 For strong scaling, six plots were chosen to emphasize the relationship between time and the number of processors. For each of the plots, we observe how increasing the number of processors for a specific size affects the max time/rank. We keep the size constant while examining different input types and the large computation and communication regions as the number of processors increases. For the time, we specifically chose max time as this often represents the worst-case scenario, which will help to identify bottlenecks since the slowest processor or task will slow down the total time for the algorithm. 
