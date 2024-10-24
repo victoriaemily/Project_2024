@@ -1207,19 +1207,100 @@ Strong Scaling Plot for 2^16:
 </p>
   	This graph is quite similar to the perturbed one, the random input type also has a similar spike when there are few processors being used. This seems to be fairly reasonable as with fewer processors, the communication and 		synchronization overhead should be higher relative to the computational work which should cause that initial spike. After that spike, as the number of processors increase, it seems to be stabilized regardless of the input 		size. This should indicate good weak scaling performance, as the algorithm is able to effectively distribute its workload and handle all the communication overhead with the increase in processors. The random input type does 	not seem to cause an issue for weak scaling, once the number of processors start to increase beyond that initial spike, the time stabilizies which should indicate efficiency.
 
-  
+- Sample Sort
+
+# Strong Scaling 
+For strong scaling, six plots were chosen to emphasize the relationship between time and the number of processors. For each of the plots, we observe how increasing the number of processors for a specific size affects the max time/rank. We keep the size constant while examining different input types and the large computation and communication regions as the number of processors increases. For the time, we specifically chose max time as this often represents the worst-case scenario, which will help to identify bottlenecks since the slowest processor or task will slow down the total time for the algorithm. 
+
+Strong Scaling for Comp Large (2^16)
+
+<img width="733" alt="Screenshot 2024-10-23 at 5 57 20 PM" src="https://github.com/user-attachments/assets/86ae72d1-3540-478b-99c9-3624051cc583">
+
+We first begin by examining strong scaling for the large computation region. For our smallest array size 65536 (2^16), we first observe a sharp decrease as we increase the number of smaller processor sizes (2-64). This indicates that adding more processors initially leads to a significant reduction in the large computation time. This makes sense as with more processors, more tasks can be performed at once, speeding up the computation. However, after the initial drop, there is some fluctuation and then a relatively constant trend between 128 and 1024 processors. This suggests diminishing returns on adding more processors. As such, the system begins to see more inefficiencies when increasing the number of processors. As such, from a certain point onward, adding more processors may be unnecessary and suboptimal, as it will not improve the computation efficiency. We also note that the sorted input type plots at a higher time than the other input types. This seems unusual as you would expect an already-sorted graph to take less time. However, the data already being sorted can lead to unnecessary comparisons and load imbalances that lead to more bottlenecks contradicting the potential time decrease from not having to swap data.
 
 
+Strong Scaling for Comp Large (2^22)
 
+<img width="687" alt="Screenshot 2024-10-23 at 1 05 27 PM" src="https://github.com/user-attachments/assets/c56abbe7-9d95-4e91-b2d7-d549995e30d4">
 
+Similar to the other graph, we examine strong scaling for a constant size. For this graph, we observe a 16777216 (2^22) sized array which we categorize as one of the mid-sized arrays in this experiment. For this size, we once again note a sharp decrease in the beginning with the smaller numbers of processors. After around 64 processors, this remains relatively constant with some slight fluctuations. However, once we move from 512 to 1024 processors, we notice a visible increase in the large computation times. Once again, from the data, we understand that there is an optimal number of processors, where any number beyond that is unnecessary and inefficient likely due to load imbalances and coordination inefficiencies that occur with larger numbers of processors. Also, we note that for this graph the input type does not have much impact as the values are mostly the same with the random data being slightly higher as we move from 512 to 1024 processors. This implies that the algorithm handles all types of inputs in a fairly uniform manner. This could indicate that the algorithm’s performance is not highly sensitive to the distribution or order of the input data, meaning it is well-optimized for different data types across this input size.
 
+Strong Scaling for Comp Large (2^28)
 
+<img width="734" alt="Screenshot 2024-10-23 at 1 05 41 PM" src="https://github.com/user-attachments/assets/a1e7c929-9d75-4193-908c-cc1103a66198">
 
+Lastly, for the large computation, we examine the largest-sized array (2^28) as we increase the number of processors. Similarly to the other two graphs we once again observe a sharp decrease at the beginning that declines to become more stable. However, for the largest size, we notice that the lines don't seem to increase as much as the middle-sized array, highlighting the tradeoff between more processors for larger data sizes and more bottlenecks and inefficiencies with increasing the number of processors. We also note that the input sizes are even closer together than before, emphasizing that with a larger data set, the algorithm’s performance is less dependent on the type of input. This is because the larger problem size may balance out any minor variations due to input type, and the computation time overshadows sorting inefficiencies related to specific input characteristics.
 
+Strong Scaling for Comm (2^16)
 
+<img width="673" alt="Screenshot 2024-10-23 at 5 57 10 PM" src="https://github.com/user-attachments/assets/2880f89c-4f68-4d65-ad6d-f85f6f22619c">
 
+We now observe strong scaling for the communication maximum time/rank with constant sizes against varying numbers of processors. We start with (2^16). Our main observation for the communication time highlights the idea that as the number of processors increases, the communication time increases. This makes sense as with more processors there will be more communication overhead due to having to communicate the samples and buckets with other processors for sample sort. Therefore, with more processors, there will be more buckets and samples to process with the all-to-all mpi command. Similar to the computation times, there is not much variation in input type until we move from 512 to 1024 processors. This indicates that the algorithm handles different input types similarly up to a certain number of processors. This could be explained by effective load balancing and efficient handling of parallel tasks. However, the slight variation between input types from 512 to 1024 processors suggests that communication overhead or inefficiencies will become more prevalent at higher processor counts. As the number of processors increases, the differences in input types may slightly affect how data is distributed and processed.
 
-  
+Strong Scaling for Comm (2^22)
+
+<img width="677" alt="Screenshot 2024-10-23 at 1 07 21 PM" src="https://github.com/user-attachments/assets/701f93a3-e87f-4c19-80ce-a8196eec85bb">
+
+Similarly to the first communication graph, there is a noticeable increase as we increase the number of processors, introducing more communication overhead. However, in the beginning, we observe a sharp decrease across the smaller number of processors. This indicates that adding more processors initially reduces the communication time, as the workload is distributed across more processors, leading to less data being handled by each processor. As such, initially, the communication time reaches a low point and the benefits of parallelism outweigh the cost of coordinating between processors, which results in a sharp decrease. However, as the number of processors increases, communication overhead starts to dominate, meaning the time spent coordinating and exchanging data between processors grows. We also notice that the random and sorted input types are visibly smaller than the reverse sorted and 1%_perturbed types. As such, we understand that with sample sorting for this array size (2^22), there are fewer irregularities in the workload distribution. 
+
+Strong Scaling for Comm (2^28)
+
+<img width="668" alt="Screenshot 2024-10-23 at 1 07 34 PM" src="https://github.com/user-attachments/assets/f1aecb47-b946-488d-b7a5-980f3f4d906f">
+
+This graph does a 180 from the other increasing trend communication graphs. With this size (2^28), we observe a sharp decrease and then a relatively constant to increasing trend. Unlike the other graphs where increasing the number of processors sharply increases the time, the time only slightly increases when moving from 512 to 1024 processors. This is typical of strong scaling, where adding processors reduces the workload, leading to faster communication at smaller numbers of processors. During this phase, the communication overhead is low, and the benefits of adding processors are more noticeable. However, after the sharp decline, the graph becomes relatively more stable. This indicates that communication time remains relatively constant in this range, suggesting that the system is balanced and efficient at a certain optimal number of processors, which may be unnecessary to go beyond. Beyond 512 processors, there’s a gradual increase in time. This suggests that communication overhead begins to dominate with higher numbers of processors. As more processors are introduced, the communication between them becomes more complex and the time spent on coordinating data exchanges increases. Also, we note that the input types are quite similar in time, showing few irregularities in workload distribution regarding the input type.
+
+# Strong Scaling Speedup
+
+Strong Scaling Speedup for Comp_large (Sorted)
+
+<img width="685" alt="Screenshot 2024-10-23 at 1 10 40 PM" src="https://github.com/user-attachments/assets/3cc72780-fb2a-4dac-a1a4-abb79935f918">
+
+This plot shows a strong scaling speedup for the large computation region with sorted input across various array sizes. Initially, there's a sharp increase in speedup, particularly for larger arrays. This makes sense as with initially adding more processors there will be a sharp improvement in performance, especially with more data being processed. However, as the number of processors grows beyond 512, we see diminishing returns. For smaller arrays, the speedup stabilizes around 5 to 10 times, indicating limited benefits from additional processors due to challenges with workload distributions and computation inefficiencies. Larger arrays (like 2^24 and 2^28) achieve higher speedups, peaking around 25 times, but eventually, delays reduce efficiency, causing speedups to decline around 1024 processors. This indicates that with too many processors beyond an optimal point, performance will no longer improve.
+
+Strong Scaling Speedup for Comp_large (Random)
+
+<img width="689" alt="Screenshot 2024-10-23 at 6 01 20 PM" src="https://github.com/user-attachments/assets/85525232-edaa-4246-a68e-f6167825c0e1">
+
+With random input, we notice a slight decrease in the speedups, indicating that the performance slightly decreases with randomized data. This makes sense, as with more data to swap there will be more functionality to review for performance. Similar to the sorted graph, there's a sharp increase in speedup, particularly for larger arrays. This once again shows that initially adding more processors significantly improves performance. However, after a certain optimal point particularly 512 processors, the performance does not improve and remains stagnant, indicating that with more processors there will be more computational inefficiencies to account for. 
+
+Strong Scaling Speedup for Comm (Sorted)
+
+<img width="642" alt="Screenshot 2024-10-23 at 1 11 28 PM" src="https://github.com/user-attachments/assets/34c2dcac-5500-4073-b3fb-724f749faf02">
+
+We now examine the speedup for communication for constant sizes while increasing the number of processors. Each of the array sizes has a similar trend. We first note an increase initially similar to the large computation region. This indicates that initially there will be a significant improvement in communication performance when first adding more processors. However, this begins to decline at a specific point, seemingly around 128 processors, as adding more processors will introduce more communication overhead since there will be more buckets and samples to distribute in the all-to-all mpi communication. As such, at a certain point, increasing the number of processors will decrease the performance of the algorithm regarding communication. 
+
+Strong Scaling Speedup for Comm (Random)
+
+<img width="649" alt="Screenshot 2024-10-23 at 6 01 02 PM" src="https://github.com/user-attachments/assets/d68beaa1-d3f3-4920-84f3-04e74c24a553">
+
+With the randomized plot, we observe that there is not much difference between input types regarding communication performance. As such, we understand that input type does not necessarily strongly affect communication performance as with any input type there will still need to be sample processing and buckets. In this plot, we continue to note the same trend as the previous with an initial increase in speedup or improvement in performance. This then begins to decline as we introduce more processors, leading to more communication overhead, and therefore a decline in performance.
+
+# Weak Scaling 
+
+Weak Scaling for Comp_large (Sorted)
+
+<img width="673" alt="Screenshot 2024-10-23 at 1 09 05 PM" src="https://github.com/user-attachments/assets/baa0afd9-499e-476c-ab2e-ffedca6abdd1">
+
+We now observe the large computation maximum time/rank in the same way that we observed the communication maximum time/rank. The graph starts with an initial decline when we first introduce the smaller processor counts. This indicates that parallelism will indeed lead to a decrease in the computation time, as with more processors the sorting of arrays is faster. However, past a certain number of processors, we see that the time seems to remain relatively constant, indicating that as we increase the number of processors, there is a tradeoff between faster processing and computational inefficiencies like load imbalances between processors that lead to a stagnant time. As such, there is an optimal number of processors, which keeps a good balance between the two. However, past this, adding more processors will be unnecessary and inefficient. We also note that as the array sizes increase, the computation time will also increase. This makes sense, as with larger data sizes to process, there will be more data to sort, therefore taking more time.
+
+Weak Scaling for Comp_large (Random)
+
+<img width="683" alt="Screenshot 2024-10-23 at 5 59 52 PM" src="https://github.com/user-attachments/assets/d2515316-3471-4e3a-86d2-1a9adb09f5e7">
+
+For a random input type, we notice the same trend as with the sorted input type, indicating that there is not much significance of the input type on computation performance with increasing array sizes and processors. This could once again indicate that there are uniform workload distributions regardless of the input type. Also, for the same reasons as listed above, we first observe a sharp decline when introducing the smaller processor counts which then seems to remain relatively constant as the number of processors increases. Similar to the sorted graph, there is also an increase in the computation time as we increase the size of the array.
+
+Weak Scaling for Comm (Sorted)
+
+<img width="630" alt="Screenshot 2024-10-23 at 1 08 20 PM" src="https://github.com/user-attachments/assets/707a800a-b972-45f1-8859-d56ae315430a">
+
+We now move on to weak scaling for communication. As such, we examine how the communication maximum time/rank is influenced by both an increase in the array size and the number of processors. Initially, for all array sizes, there is a sharp decrease with a smaller number of processors. This indicates that with a smaller number of processors, there will be faster communication. However, when we move past 512 processors, we notice a slight increase in all the array sizes as there will be more communication overhead with more processors as explained in the analysis for the graphs above. We also note that with larger arrays, there will be more communication overhead as we see from the increases in time as we increase the array sizes. This is likely a result of the fact that with larger array sizes, there are more samples to communicate as well as more values to process into each bucket. 
+
+Weak Scaling for Comm (Random)
+
+<img width="728" alt="Screenshot 2024-10-23 at 6 00 22 PM" src="https://github.com/user-attachments/assets/ba0da3bd-b40c-4850-9cc7-345e5d48b65e">
+
+We first note that there is not much difference in the random and sorted graphs. As such we observe that the input type does not strongly influence communication. This indicates that there are not many irregularities caused by different workload distributions. We also note that the data seems to have the same trends as the sorted graph. For the reasons listed in the prior analysis, we notice that communication time increases as we increase the number of processors and array sizes, and initially declines when we introduced the first processor counts.
+
 ## 5. Presentation
 Plots for the presentation should be as follows:
 - For each implementation:
