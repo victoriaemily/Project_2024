@@ -970,32 +970,31 @@ In this plot, we see a similar pattern as the 2^16 array, where there is a sharp
   <img width="604" alt="StrongScaling2^20" src="BitonicSort/plots/strong_scaling_input_size_1048576.png">
 </div>
 
-Placeholder
+This shape of this plot is similar to the ones above, where we have an initial dip in runtime, then a plateau at 32 processes, and stable runtime after that. This time, only the 1% perturbed line spikes at 256 processes and the others lay almost on top of each other. Reverse sorted has the lowest runtime followed closely by sorted and random. We can see the benefits of parallelization more and more as we increase input size. However, there is still significant communication and process synchronization overhead, where processes must wait for others to finish before continuing.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScaling2^22" src="BitonicSort/plots/strong_scaling_input_size_4194304.png">
 </div>
 
-Placeholder
+In this plot, we see significant runtime with only two processors, which dips exponentially until 32 processors, where the trendlines once again become a bit erratic. Random and reverse sorted data spikes and then stabilizes at 256 processes, joining the other two trendlines. At 2 processes, the amount of parallelization for such a large array is limited, which would explain the high overhead initially. The spike with more processes could be explained by synchronization overheads or resource contention to name some possible reasons. Overall, we see that as we increase the input size, the more parallelization we see in the plots.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScaling2^24" src="BitonicSort/plots/strong_scaling_input_size_16777216.png">
 </div>
 
-Placeholder
+As we increase the input size to 2^24, we see the plot takes the shape of an exponentially decreasing graph, but is still erratic with larger processes. We see very high runtimes with 2 processes (each process is handling a very large portion of the input size), and the runtimes generally decrease as we add more processes. This is because each process now has less data distributed to it, which reduces time spent on calculating and communicating large chunks of data, thus leading to faster runtimes. However, we still see the effects of parallelization overhead in the slightly unstable runtimes of the larger processes.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScaling2^26" src="BitonicSort/plots/strong_scaling_input_size_67108864.png">
 </div>
 
-Placeholder
-
+This plot is similar to the one above but appears smoother due to the larger input size. With a greater amount of data, the beneficial effects of parallelizing the sorting algorithm become more pronounced, as the workload is more manageably distributed across processes. However, random input still takes noticeably more runtime than the other inputs, which are nearly stacked on top of each other. This may be because of the partitions of randomly sorted data chunks. Since the data is not sorted in any way, processes will handle different amounts of work, leading to increased communication and synchronization overhead with increased data exchanges on some processes.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScaling2^28" src="BitonicSort/plots/strong_scaling_input_size_268435456.png">
 </div>
 
-Placeholder
+With this plot, all the lines show smooth exponentially decreasing trends. This clearly outlines the algorithm sorting very large input in parallel. We start with significant runtime at 2 processes, which decreases drastically as we add more processes. The sheer amount of data needed to be calculated and communicated by 2 processes contributes to the large initial runtimes, but as the workload is distributed over more processes, the execution times become faster. Here, we see the advantages of parallelization outweigh its overheads. The random takes up more runtime for the same reason as listed in the above graph.
 
 ### Strong Scaling - Speedup
 
@@ -1003,25 +1002,25 @@ Placeholder
   <img width="604" alt="StrongScalingPerturbed" src="BitonicSort/plots/strong_scaling_speedup_input_type_1_perturbed.png">
 </div>
 
-Placeholder
+Speedup for 1% perturbed arrays is most noticeable with the largest input sizes. In the plot, the lines for the three largest arrays are almost identical, indicating that the algorithm scales more effectively for these input sizes, causing greater speedup. This is closely followed by the fourth-largest array, which also benefits from efficient parallelization. The speedup is more unsteady and smaller for the three smallest array sizes. This is because of the overhead from communication and process synchronization. As a result, the parallelization is less effective, leading to more variability and lower speedup for smaller arrays.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScalingRandom" src="BitonicSort/plots/strong_scaling_speedup_input_type_Random.png">
 </div>
 
-Placeholder
+The speedup graph for random is mostly similar to the one above. Speedup is most noticeable with the largest input sizes, shown by the plot. The three largest arrays have almost identical speedup trends, indicating that the algorithm scales more effectively for these input sizes. This is closely followed by the 2^22 array, which also benefits decently from efficient parallelization. The speedup is less pronounced for the three smallest array sizes because of the overhead from communication and process synchronization. As a result, the parallelization is less effective, leading to more variability and lower speedup for smaller arrays.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScalingReverseSorted" src="BitonicSort/plots/strong_scaling_speedup_input_type_ReverseSorted.png">
 </div>
 
-Placeholder
+This plot appears much more constant after the initial dip in speedup, which could be because this type of data is more predictable for the sorting algorithm. Outside of that, we see very similar trends in speedup for the different arrays. Once again, the speedup trends for the three largest arrays are almost identical, meaning the algorithm scales more effectively for these input sizes. This is closely followed by the fourth-largest array, which also receives decent speedup as we increase the number of processes. The speedup becomes less pronounced for the three smallest array sizes. The delaying effects of overhead from communication and process synchronization show, and the parallelization is therefore less effective.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="StrongScalingSorted" src="BitonicSort/plots/strong_scaling_speedup_input_type_Sorted.png">
 </div>
 
-Placeholder
+Speedup for sorted arrays of different input sizes is greatest with the larger sizes, meaning parallelization is most effective for them. As reflected in the graph, the lines for the three largest arrays almost completely overlap and all have the greatest speedup. This is closely followed by the fourth-largest array, which also benefits from efficient parallelization. The speedup is less pronounced for the three smallest array sizes because there is decent overhead from communication and process synchronization. As a result, the parallelization is less effective, leading to more variability and lower speedup for smaller arrays.
 
 ### Weak Scaling
 
@@ -1029,25 +1028,25 @@ Placeholder
   <img width="604" alt="WeakScalingPerturbed" src="BitonicSort/plots/weak_scaling_input_type_1_perturbed.png">
 </div>
 
-Placeholder
+This graph shows constant lines for all the array sizes. The four smallest arrays are almost identical in terms of runtime. They are closely followed by 2^24 input size, followed less closely by 2^26, and decently far away from 2^28. For weak scaling, this means the algorithm is maintaining performance and the time remains relatively stable as we scale upwards.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="WeakScalingRandom" src="BitonicSort/plots/weak_scaling_input_type_Random.png">
 </div>
 
-Placeholder
+This graph displays constant lines across all array sizes. The runtimes for the four smallest arrays are nearly identical, with the 2^24 input size closely following. The 2^26 size follows at a slightly greater distance, and the 2^28 size shows a more significant gap. The execution times remain relatively stable as we increase the workload, indicating good scalability, but larger input sizes still face overhead with communication and synchronization.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="WeakScalingReverseSorted" src="BitonicSort/plots/weak_scaling_input_type_ReverseSorted.png">
 </div>
 
-Placeholder
+The runtimes for the four smallest arrays greatly overlap, followed by the 2^24, 2^26, and 2^28 input size. As the workload increases, the execution times remain relatively stable, demonstrating good scalability. However, larger input sizes still experience parallelization overhead because of communication and synchronization, among other factors.
 
 <div style="background-color:white; padding:10px;">
   <img width="604" alt="WeakScalingSorted" src="BitonicSort/plots/weak_scaling_input_type_Sorted.png">
 </div>
 
-Placeholder
+All the array sizes behave fairly similarly as more processes are added. They stay constant, with the only primary difference being their runtimes. The 2^16 to 2^22 trendlines are nearly the same. They are closely followed by 2^24 input size, followed less closely by 2^26, and decently far away from 2^28. As the workload increases, the execution times remain relatively stable, demonstrating good scalability, but larger input sizes still face noticeable overhead with communication and synchronization.
 
 - Radix Sort:
 
