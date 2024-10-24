@@ -1207,9 +1207,10 @@ Strong Scaling Plot for 2^16:
 </p>
   	This graph is quite similar to the perturbed one, the random input type also has a similar spike when there are few processors being used. This seems to be fairly reasonable as with fewer processors, the communication and 		synchronization overhead should be higher relative to the computational work which should cause that initial spike. After that spike, as the number of processors increase, it seems to be stabilized regardless of the input 		size. This should indicate good weak scaling performance, as the algorithm is able to effectively distribute its workload and handle all the communication overhead with the increase in processors. The random input type does 	not seem to cause an issue for weak scaling, once the number of processors start to increase beyond that initial spike, the time stabilizies which should indicate efficiency.
 
-- Sample Sort
 
-##### Strong Scaling 
+- Sample Sort:
+
+### Strong Scaling 
 For strong scaling, six plots were chosen to emphasize the relationship between time and the number of processors. For each of the plots, we observe how increasing the number of processors for a specific size affects the max time/rank. We keep the size constant while examining different input types and the large computation and communication regions as the number of processors increases. For the time, we specifically chose max time as this often represents the worst-case scenario, which will help to identify bottlenecks since the slowest processor or task will slow down the total time for the algorithm. 
 
 Strong Scaling for Comp Large (2^16)
@@ -1249,7 +1250,7 @@ Strong Scaling for Comm (2^28)
 
 This graph does a 180 from the other increasing trend communication graphs. With this size (2^28), we observe a sharp decrease and then a relatively constant to increasing trend. Unlike the other graphs where increasing the number of processors sharply increases the time, the time only slightly increases when moving from 512 to 1024 processors. This is typical of strong scaling, where adding processors reduces the workload, leading to faster communication at smaller numbers of processors. During this phase, the communication overhead is low, and the benefits of adding processors are more noticeable. However, after the sharp decline, the graph becomes relatively more stable. This indicates that communication time remains relatively constant in this range, suggesting that the system is balanced and efficient at a certain optimal number of processors, which may be unnecessary to go beyond. Beyond 512 processors, there’s a gradual increase in time. This suggests that communication overhead begins to dominate with higher numbers of processors. As more processors are introduced, the communication between them becomes more complex and the time spent on coordinating data exchanges increases. Also, we note that the input types are quite similar in time, showing few irregularities in workload distribution regarding the input type.
 
-# Strong Scaling Speedup
+### Strong Scaling Speedup
 
 Strong Scaling Speedup for Comp_large (Sorted)
 
@@ -1275,7 +1276,7 @@ Strong Scaling Speedup for Comm (Random)
 
 With the randomized plot, we observe that there is not much difference between input types regarding communication performance. As such, we understand that input type does not necessarily strongly affect communication performance as with any input type there will still need to be sample processing and buckets. In this plot, we continue to note the same trend as the previous with an initial increase in speedup or improvement in performance. This then begins to decline as we introduce more processors, leading to more communication overhead, and therefore a decline in performance.
 
-# Weak Scaling 
+### Weak Scaling 
 
 Weak Scaling for Comp_large (Sorted)
 
