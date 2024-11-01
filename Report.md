@@ -1351,6 +1351,30 @@ Weak Scaling for Comm (Random)
 
 We first note that there is not much difference in the random and sorted graphs. As such we observe that the input type does not strongly influence communication. This indicates that there are not many irregularities caused by different workload distributions. We also note that the data seems to have the same trends as the sorted graph. For the reasons listed in the prior analysis, we notice that communication time increases as we increase the number of processors and array sizes, and initially declines when we introduced the first processor counts.
 
+- All Algorithms:
+
+Comp Large vs. Number of Processors (Sorted 268435456)
+<img width="908" alt="Screenshot 2024-11-01 at 6 16 02 PM" src="https://github.com/user-attachments/assets/92303284-07a1-48b7-95e6-39213aaa331d">
+
+Comp Large vs. Number of Processors (Random 268435456)
+<img width="904" alt="Screenshot 2024-11-01 at 6 15 27 PM" src="https://github.com/user-attachments/assets/fc9a7ba8-cac1-46d4-be5b-eb609c76737f">
+
+Comm vs. Number of Processors (1%_Perturbed 65536)
+<img width="801" alt="Screenshot 2024-11-01 at 6 26 07 PM" src="https://github.com/user-attachments/assets/80bbf58a-d20d-46b0-abbb-38fd0caa228c">
+
+Comm vs. Number of Processors (1%_Perturbed 268435456)
+<img width="876" alt="Screenshot 2024-11-01 at 6 21 25 PM" src="https://github.com/user-attachments/assets/41105904-e811-4579-8b28-2ffe175a8a68">
+
+Speedup vs. Number of Processors (Random 65536)
+<img width="899" alt="Screenshot 2024-11-01 at 6 20 27 PM" src="https://github.com/user-attachments/assets/84dbea3a-10d1-40df-8c8c-2f3ac025fa9c">
+
+Speedup vs. Number of Processors (Random 268435456)
+<img width="894" alt="Screenshot 2024-11-01 at 6 21 02 PM" src="https://github.com/user-attachments/assets/7c52d772-f63f-4610-bf9f-dcae25b748b3">
+
+Total time vs. Number of Processors (Random 268435456)
+<img width="821" alt="Screenshot 2024-11-01 at 6 29 59 PM" src="https://github.com/user-attachments/assets/b0f7e490-69fe-4a00-877d-3de2efd30c69">
+
+
 ## 5. Presentation
 Plots for the presentation should be as follows:
 - For each implementation:
