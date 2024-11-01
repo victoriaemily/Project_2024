@@ -1154,7 +1154,7 @@ Overall, random seems to benefit the most when increasing processors up to a cer
 
 Strong Scaling for Comp Large (2^16):
   <p align="left">
-  <img width="604" alt="StrongScaling2^16" src="https://github.com/user-attachments/assets/c760dbd8-c314-4c07-bde1-8795f2626a07">
+  <img width="604" alt="StrongScaling2^16Comp" src="https://github.com/user-attachments/assets/c760dbd8-c314-4c07-bde1-8795f2626a07">
 </p>
   	For an input size of 65536, the plot shows an initial decrease in time, as the number of processors increases, which should indicate that the algorithm does initially benefit from parallelism with the decrease in time. This should also show that the workload per processor is significant which will allow for efficient parallelism. After around 16 processors, although mostly decreasing, does start to level off. This plateau could occur because each processor receives smaller chunks of data, increasing the overhead during merging. Overall, random data does take the longest which could be due to its unpredictable distribution which leads to imbalances that will increase the merging complexity in the algorithm. Specifically, random data starts to increase slightly after 32 processors indicating increased communication and synchronization overhead in the merge phase as well as load imbalance with its unpredictability. The overheads start to outweigh the benefits of the addition of processors, leading to a slight increase instead of a decrease. It seems for smaller input sizes, increasing processors beyond a certain point for merge sort may yield minimal performance gain as merge overhead starts to overweigh the benefits.
 
@@ -1162,7 +1162,7 @@ Strong Scaling for Comp Large (2^16):
 
 Strong Scaling for Comp Large (2^20):
   <p align="left">
-  <img width="604" alt="StrongScaling2^20" src="https://github.com/user-attachments/assets/f41d1b1a-1878-4c04-9d55-909ee4952782">
+  <img width="604" alt="StrongScaling2^20Comp" src="https://github.com/user-attachments/assets/f41d1b1a-1878-4c04-9d55-909ee4952782">
 </p>
   	With this graph, performance does improve significantly till around 16/32 processors before the times continue to decrease but is less prominent across most input types. This should suggest that the workload per processor is substantial enough to offset the merge overhead at this point. After that point, the performance gains start to diminish with the merging costs and processor communication becomes more significant. Once again, random input type is the slowest which should indicate inefficiency with both partitioning and balancing due to its unpredictable data. Other input types exhibit more efficient scaling due to better load balancing and smoother merging. Overall, this graph also follows expected strong scaling trends for parallel merge sort, with the increase in the number of processors and the decrease in execution until a certain point with more overhead being introduced.  For a more medium input size, parallel merge sort scales more effectively but does encounter limitations due to merge overhead.
 
@@ -1170,7 +1170,7 @@ Strong Scaling for Comp Large (2^20):
 
 Strong Scaling for Comp Large (2^28):
   <p align="left">
-  <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/586d0619-ed4a-4ba2-83f1-1b824f9038d7">
+  <img width="604" alt="StrongScaling2^28Comp" src="https://github.com/user-attachments/assets/586d0619-ed4a-4ba2-83f1-1b824f9038d7">
 </p>
 	For this input size, the algorithm does benefit from strong scaling with a decrease trend and it seems to benefit from strong scaling across a broader range of processors instead. The larger workload should allow each processor to perform substantially before merging showing the effectiveness of parallelism. Unlike the previous two graphs, it seems the plateau does happen but happens at a higher processor count (128). This could suggest that with larger data, processors can perform enough independent sorting that outweigh all the merging costs, making scaling pretty effective. However, the random input type requires more time, while other inputs perform more efficiently, suggesting that predictable data patterns allow for better load distribution. Overall, larger problem sizes seem to allow for better scaling but the merge phase still becomes a bottleneck due to its communication and synchronization overhead.
 
@@ -1178,7 +1178,7 @@ Strong Scaling for Comp Large (2^28):
 
 Strong Scaling for Comm (2^18):
    <p align="left">
-   <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/4998f5a9-dc36-4f7a-b699-22677eb61378">
+   <img width="604" alt="StrongScaling2^18Comm" src="https://github.com/user-attachments/assets/4998f5a9-dc36-4f7a-b699-22677eb61378">
 </p>
 	With the increase in the number of processors, the strong scaling for communication starts pretty low as each processor handles a substantial portion of the data which should minimize the frequency of the merging and inter-processor communication. After around 128 processors, there is a sharp increase in communication overhead which is due to the added synchronization required as each processor starts to handle smaller data segments, increasing the amount of merging. All the input types are relatively similar in showing communication costs, as the communication overhead is driven by the number of processors than the data distribution with a smaller input size. 
 
@@ -1186,14 +1186,14 @@ Strong Scaling for Comm (2^18):
 
  Strong Scaling for Comm (2^20):
    <p align="left">
-   <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/651a1af2-0fe3-4e42-a81a-26e6a9a6d337">
+   <img width="604" alt="StrongScaling2^20Comm" src="https://github.com/user-attachments/assets/651a1af2-0fe3-4e42-a81a-26e6a9a6d337">
 </p>
  	For this graph, the communication is pretty low for fewer processors since the processors can perform more sorting independently before the need to synchronize. Communication overhead starts to rise steadily until around 128 processors where it increases steeply showing merging and synchronization becoming more dominant as each processor’s workload starts to decrease. Each input type does have some variance in communication costs, especially with the increase in processors which could be due to factors like temporary load balancing adjustment or minor system level fluctuations but it does not have a large impact on the overall trend of the communication overhead increasing. The trend is to be expected due to the increase in processors which increases communication, especially during the merging phase where synchronization and data transfer are needed.
 
  &nbsp;
 Strong Scaling for Comm (2^24):
    <p align="left">
-   <img width="604" alt="StrongScaling2^28" src="https://github.com/user-attachments/assets/d4f4b272-66d6-43d4-9daf-963b4688f2b3">
+   <img width="604" alt="StrongScaling2^24Comm" src="https://github.com/user-attachments/assets/d4f4b272-66d6-43d4-9daf-963b4688f2b3">
 </p>
 	For this larger input size plot, communication costs are more noticeable even at lower processor counts which suggests that the data size increases the need for synchronization during the merging process. Similar to the other graphs, communication costs do increase steeply around 64 processors which indicates that parallelism initially helps until the merging phase’s communication overhead starts to become more and more problematic with the increase in processors. At higher processor counts, the random input type does have slightly higher communication costs which shows the unpredictable data patterns lead to uneven load distribution which would cause additional synchronize overhead when completing the algorithm. 
  
@@ -1202,7 +1202,7 @@ Strong Scaling for Comm (2^24):
 
  Strong Scaling Speedup for Comp Large (1% Perturbed):
     <p align="left">
-  <img width="604" alt="StrongScalingSpeedupPerturbed" src="https://github.com/user-attachments/assets/4d435293-984c-4e09-8e19-44c44df3533f">
+  <img width="604" alt="StrongScalingSpeedupPerturbedComp" src="https://github.com/user-attachments/assets/4d435293-984c-4e09-8e19-44c44df3533f">
 </p>
 	For all input sizes, the speedup does increase steadily as the processors increase from 2 to 16 which shows the benefits of parallelizing sorting. After 16 processors, the speedup starts to plateau across all input sizes which could be due to the merging phase’s communication and synchronization overhead which starts to limit additional speedup with the increase in the number of processors. All the input sizes do demonstrate a similar trend with pretty minor variations, suggesting that the 1% perturbed data maintains a balanced workload across processors showing a more stable scaling pattern. Overall, the speedup trend is relatively expected due to the increase in speedup until at a certain point it starts to increase less noticeably. There are many factors such as the increase in all communication and synchronization overheads which start to pull down at the speedup, outweighing the benefits of the increase in processors.
 
@@ -1210,7 +1210,7 @@ Strong Scaling for Comm (2^24):
 
 Strong Scaling Speedup for Comp Large (Random):
   <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/5cedfb86-2216-4685-80e9-e5d55f3a01ef">
+  <img width="604" alt="StrongScalingSpeedupRandomComp" src="https://github.com/user-attachments/assets/5cedfb86-2216-4685-80e9-e5d55f3a01ef">
 </p>
   	Similar to the above graph, speedup starts to increase initially but plateaus sooner at around 8 processors, especially for most of the smaller input sizes. However, unlike 1% perturbed, it starts to decline after 64 processors, particularly for smaller input sizes. This decline could be caused by an increase in communication overhead and load imbalance from the unpredictable data distribution which could lead to inefficiencies for merging. Overall, the larger input sizes do perform slightly better as speedup does remain pretty high indicating that larger workloads do allow for better parallel efficiency before the costs start to outweigh all the benefits. This plot does show that the input sizes are not as aligned as the perturbed plot which could be due to factors like load imbalance for random data, the distribution of values across partitions may vary which leads to processors receiving more complex portions of work. This kind of imbalance may have the processors complete their tasks at different rates, increasing the synchronization needed before merging. Unlike perturbed data, where the workload distribution is more predictable and balanced across processors, random data seems to introduce a degree of variability in partition sizes and complexity. This could result in more variability in scaling behaviors for each input size causing the curves to diverge rather than align with some input sizes experiencing greater communication and synchronization overhead, affecting speedup consistency.
 
@@ -1218,7 +1218,7 @@ Strong Scaling Speedup for Comp Large (Random):
 
 Strong Scaling Speedup for Main (Random):
   <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/43882bf8-520a-47f0-91b7-3db514b8aa25">
+  <img width="604" alt="StrongScalingSpeedupRandomMain" src="https://github.com/user-attachments/assets/43882bf8-520a-47f0-91b7-3db514b8aa25">
 </p>
 	For smaller input sizes, speedup starts pretty high at 2 processors but it starts to overall decrease as more processors are added. This decline happens mainly due to the communication and synchronization overhead for merging starting to become relatively large compared to the computation time, which will result in diminishing returns. Smaller workloads do not have enough data to keep the large number of processors efficiently utilized, so adding more processors ends up adding overhead without enough work to properly offset this. However, for larger input sizes, the speedup generally increases up to around 32 processors before starting to plateau and then decline. These larger sizes do benefit from parallelism initially because there is enough work per processor to offset the overhead. However, at higher processor counts, these larger input sizes are also affected by merging overhead and synchronization costs hence the plateau and decline. 
 
@@ -1226,7 +1226,7 @@ Strong Scaling Speedup for Main (Random):
 
 Strong Scaling Speedup for Main (1% Perturbed):
   <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/12a6a04e-7b99-4334-be32-ad0682dd79f3">
+  <img width="604" alt="StrongScalingSpeedupPerturbedMain" src="https://github.com/user-attachments/assets/12a6a04e-7b99-4334-be32-ad0682dd79f3">
 </p>
   	For larger input sizes, there is a clear increase in speedup as the number of processors grows especially up to around 128 processors. This rise is pretty expected as parallelism does effectively reduce computation time when each processor has a substantial workload. After reaching a peak, these larger input sizes do start to plateau and slightly decline which could be due to the communication and synchroization costs associated with merging. These costs start to offset the benefits of adding more processors. However, smaller input sizes have a slight increase then most decrease steadily as more processors are added. This decline is once again due to not enough work per processor, making the overheads relatively large compared to computation time. Smaller data sizes quickly show that adding more processors becomes counterproductive due to the dominant merging overhead outshadowing. Unlike random data, perturbed data should maintain a more predictable structure which should have a more balanced distribution across processors. However, all these benefits are outweighed due to overheads which decline speedup. 
 
@@ -1236,7 +1236,7 @@ Strong Scaling Speedup for Main (1% Perturbed):
 
 Weak Scaling for Comp Large (Random):
 <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/f8efb875-a290-4abd-ba2d-c1cf9ab0128f">
+  <img width="604" alt="WeakScalingCompRand" src="https://github.com/user-attachments/assets/f8efb875-a290-4abd-ba2d-c1cf9ab0128f">
 </p>
 	For larger input sizes such as 268435456, there is a sharp decrease in execution time from 2 to 8 processors before it starts to plateau. This initial drop is pretty expected as the larger workload should benefit from parallel efficiency when distributed across multiple processors. After plateauing, the execution time remains pretty stable but has a slight increase for the larger input sizes. This slight increase should be expected in weak scaling because with the increase in processors, communication and synchronization costs become significant, especially during merging. For smaller input sizes, the execution time is nearly constant across all processor counts which is also expected as each processor has a manageable workload. This minimizes most of the impact of overhead. Moreover, the larger input sizes start relatively higher due to the total workload being larger which results in a higher baseline time due to increased complexity and memory overhead that is involved in managing and merging more data in the merge sort. 
 
@@ -1244,7 +1244,7 @@ Weak Scaling for Comp Large (Random):
 
 Weak Scaling for Comp Large (Sorted):
 <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/1e212d82-2346-4157-9f0b-ef34151f0ecc">
+  <img width="604" alt="WeakScalingCompSort" src="https://github.com/user-attachments/assets/1e212d82-2346-4157-9f0b-ef34151f0ecc">
 </p>
 	For sorted data, it follows a similar trend to the above plot where larger input sizes experience an initial decrease then followed by a plateau. This pattern should be expected as weak scaling does benefit from spreading large workloads across processors with minor increases in execution time due to overhead. There is a slight upward trend in execution time for larger input sizes which could be due to additional merging and synchronization overhead. Smaller input sizes maintain near-constant execution times which is expected as it indicates effective weak scaling, as smaller workloads per processor should keep overhead pretty low. 
 
@@ -1252,7 +1252,7 @@ Weak Scaling for Comp Large (Sorted):
 
 Weak Scaling for Comm (1% Perturbed):
 <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/406ca78f-7bbd-45fd-910b-b31e558d15d5">
+  <img width="604" alt="WeakScalingCompPerturbed" src="https://github.com/user-attachments/assets/406ca78f-7bbd-45fd-910b-b31e558d15d5">
 </p>
 	For smaller input sizes, the communication time remains mostly constant till around 64 processors where it begins to increase slightly. This increase should be relatively expected at higher processor counts because small workloads do start to experience more communication overhead during merging when they synchronize across a large number of processors. Larger input sizes do experience a more pronounced increase in communication time as the processor increases past 64. This should be expected because merging requires more frequent synchronization and data exchange specifically for these larger datasets. Finally, the largest input size has a dip at around 32 to 64 processors before the rise of communication costs. This pattern could be because as the workload distribution does start off-balanced, the increase in processors once again provides dominant merging communication.
 
@@ -1260,7 +1260,7 @@ Weak Scaling for Comm (1% Perturbed):
 
 Weak Scaling for Comm (Reverse):
 <p align="left">
-  <img width="604" alt="StrongScalingSpeedupRandom" src="https://github.com/user-attachments/assets/578b12d2-e365-4de0-9f9b-885a05d1bb07">
+  <img width="604" alt="WeakScalingCommReverse" src="https://github.com/user-attachments/assets/578b12d2-e365-4de0-9f9b-885a05d1bb07">
 </p>
 	For this plot, smaller input sizes do show pretty stable communication times initially before a slight increase as processors pass 64. This increase could be due to communication overhead from merging which starts to impact smaller workloads when more processors start to get added. For larger input sizes, there is an initial period of stability before a rise in communication time with the increase in processors. This behavior is relatively expected due to higher communication requirements for the merges of larger datasets across more and more processors. The largest input size exhibits a dip at around 32 to 128 processors before increasing communication time. This pattern is pretty expected because the initial efficiency of load distribution does allow the processors to work independently with minimal communication overhead. However, with the increase in processors, the merging starts to demand more synchronization and the communication starts to increase.
 
