@@ -1048,108 +1048,100 @@ The runtimes for the four smallest arrays greatly overlap, followed by the 2^24,
 
 All the array sizes behave fairly similarly as more processes are added. They stay constant, with the only primary difference being their runtimes. The 2^16 to 2^22 trendlines are nearly the same. They are closely followed by 2^24 input size, followed less closely by 2^26, and decently far away from 2^28. As the workload increases, the execution times remain relatively stable, demonstrating good scalability, but larger input sizes still face noticeable overhead with communication and synchronization.
 
-- Radix Sort:
+# Radix Sort:
 
-### Strong Scaling - Input Sizes
+## 1. Radix Sort: Strong Scaling Speedup Analysis
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^28" src="radix_sort/plots/strong_scaling_input_size_268435456.0.png">
-</div>
+### Overview
+Here, we analyze the strong scaling speedup across different phases for each input type. Speedup is calculated by the performance gain achieved by increasing the number of processors for a fixed input size. The base time is the 2-processor run.
 
-The plot shows that for a very large input size, increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors. Past this point, performance stabilizes or worsens (but very slightly), indicating that further increases in the number of processors offer diminishing returns. The different input types show similar performance patterns, suggesting that for large inputs, the sorting state of the data doesn't really impact scalability.
+#### Sorted Input Type
+![Sorted](./radix_sort/combined_plots/strong_scaling_speedup_Sorted.png)
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^26" src="radix_sort/plots/strong_scaling_input_size_67108864.0.png">
-</div>
+**Commentary:**
+The sorted type initially has a smaller speedup when processes are increased relative to the other input types. This may be due to the minimal work required to redistribute elements across processors. So the benefit of adding more processors is initially limited because there is less sorting work to divide.
 
-This graph exhibits a similar pattern to the above graph. Increasing the number of processes initially reduces computation time significantly, but beyond 100-200 processes, the benefits taper off. This is likely due to communication and synchronization overheads, which will start to outweigh the advantages of adding more processors.
-However, 1% perturbed does have a slighter higher execution time at the highest processor count. This could be due to increased irregularity in the distribution of the data.
+#### Random Input Type
+![Random](./radix_sort/combined_plots/strong_scaling_speedup_Random.png)
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^24" src="radix_sort/plots/strong_scaling_input_size_16777216.0.png">
-</div>
+#### Reverse Sorted Input Type
+![ReverseSorted](./radix_sort/combined_plots/strong_scaling_speedup_ReverseSorted.png)
 
-This graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. This is likely due to overwhelming communication and synchronization overheads. These factors can cause certain input types to become less efficient as more processors are used.
-Interestingly enough, 1% perturbed comes out as the winner with the highest number of processors with the lowest execution count, while random has the largest computational time.
+#### 1% Perturbed Input Type
+![1% Perturbed](./radix_sort/combined_plots/strong_scaling_speedup_1_perturbed.png)
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^22" src="radix_sort/plots/strong_scaling_input_size_4194304.0.png">
-</div>
+**Overall Commentary:**
+Across all input types:
+The graphs illustrate strong scaling performance for the radix sort algorithm, with increasing processor counts across subplots. comp_large (orange) shows an initial drop, then fluctuates slightly, indicating that it benefits from parallelization up to a certain point, but further scaling yields less returns due to the overhead per processor. 
+<br> comm (blue) remains relatively low and consistent, suggesting that communication costs are managed well or become less significant as the computational load reduces per processor. 
+<br> The overall shape supports strong scaling behavior, where increasing processors generally reduces runtime, but speedup slows as overhead becomes more prominent with higher processor counts.
 
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-16. However, with more processors beyond that count, the benefits increasingly taper off. The points at which the different algorithms start to see diminishing returns differ very slightly, compared to the graph above. This is likely due to overwhelming communication and synchronization overheads. 
-This is more clearly shown that these factors can cause certain input types to become less efficient as more processors are used. 
+---
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^20" src="radix_sort/plots/strong_scaling_input_size_1048576.0.png">
-</div>
+## 2. Radix Sort: Weak Scaling Analysis
 
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-8.
+### Overview
+We now present weak scaling plots for each input type. Weak scaling measures the algorithm’s ability to handle proportionally larger input sizes as the processor count increases. Ideally, the max time per rank should remain constant.
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^18" src="radix_sort/plots/strong_scaling_input_size_262144.0.png">
-</div>
+#### Sorted Input Type
+![Sorted](./radix_sort/combined_plots/weak_scaling_Sorted.png)
 
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2-4.
+#### Random Input Type
+![Random](./radix_sort/combined_plots/weak_scaling_Random.png)
+
+#### Reverse Sorted Input Type
+![ReverseSorted](./radix_sort/combined_plots/weak_scaling_ReverseSorted.png)
+
+#### 1% Perturbed Input Type
+![1% Perturbed](./radix_sort/combined_plots/weak_scaling_1_perturbed.png)
+
+**Overall Commentary:**
+Overall: The graphs display weak scaling behavior for the radix sort algorithm across varying processor counts.  
+<br> We observe that comp_large (orange) remains consistently low, indicating that preparing the send buffer has minimal impact on overall runtime as the number of processors increases. comm (blue) shows a slight upward trend or remains steady, suggesting some increase in communication time with more processors but still relatively low compared to main. main (green) exhibits fluctuating behavior, with an initial peak followed by some rises as the processor count increases past 256, which may be due to load imbalances or increased coordination overhead in weak scaling. but as the input size increases, the trend better aligns with weak scaling expectations where time per rank would remain constant. <br>
+All subplots follow the trend of an initially very high main computation, with a decently high max time/rank up to the processor input size of 4194304, before they start to see a more relative stark dropoff in max time/rank with higher processor counts. This points towards high communication overheads and other synchronization costs.
+Regardless of the input type (sorted, random, 1%, reverse sorted), the trend holds.
+In theory: Weak scaling tends to be more consistent with larger input sizes because the increased computational workload per processor reduces the relative impact of communication and synchronization costs and other overheads.
 
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="StrongScaling2^16" src="radix_sort/plots/strong_scaling_input_size_65536.0.png">
-</div>
+---
+## Radix Sort: Combined Strong Scaling Plots by Phase
 
-Similar to the previous graph, this graph shows a significant decrease in overall computational time beyond processors 2.
+### Overview
+The following plots show the strong scaling performance across all input sizes within each phase.
 
-Overall, the analysis of the strong scaling in regards to input size shows how, with smaller input sizes, there are diminishing returns (and even detrimental effects due to the increased overhead of processor communication and synchronization overheads) as processors are scaled up.
+#### Communication (comm) Phase
+![comm](./radix_sort/combined_plots/combined_strong_scaling_comm.png)
 
-### Weak Scaling
+**Commentary:**
+The comm phase remains very stable across different input types and processor counts, which suggests that communication overhead is not significantly impacted by the input distribution. This stability is typical for radix sort, where communication is largely predictable as elements are distributed to processors based on their bit patterns.
+There is consistency across the input types, suggesting that the type of input data does not matter with communication overhead.
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/weak_scaling_input_type_1_perturbed.png">
-</div>
+#### Computation (comp_large) Phase
+![comp](./radix_sort/combined_plots/combined_strong_scaling_comp_large.png)
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling2" src="radix_sort/plots/weak_scaling_input_type_Random.png">
-</div>
+**Commentary:**
+comp_large exhibits a sharp initial decrease as processor count increases, indicating that this phase benefits from parallelization by distributing the work.
+For larger processor counts, the comp_large phase tends to fluctuate slightly, likely due to diminishing returns from adding more processors, as each processor’s workload decreases. 
+However, ReverseSorted and Random input types occasionally show higher values, which suggests a greater burden for these inputs, possibly due to reordering being needed.
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling3" src="radix_sort/plots/weak_scaling_input_type_ReverseSorted.png">
-</div>
+#### Main (main) Phase
+![main](./radix_sort/combined_plots/combined_strong_scaling_main.png)
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling4" src="radix_sort/plots/weak_scaling_input_type_Sorted.png">
-</div>
+**Commentary:**
+The main phase closely follows patterns of comp_large, showing that computation is a big contributor to overall runtime. Input types like Random and ReverseSorted, which require more reordering, show slightly higher main times initially, especially at lower processor counts. <br>
+As processors increase, the total runtime does converge across the input types, suggesting that the algorithm has effective parallel scaling. However, Sorted and 1% Perturbed inputs generally have lower runtimes due to their minimal reordering needs, suggesting that they have better scaling efficiency.
 
-Overall:
-For smaller input sizes, the time remains relatively stable as the number of processes increases, indicating good scalability. However, for the larger input sizes (like 67108864 and 268435456), there is an initial spike in execution time, which then declines as the number of processes increases. This suggests while smaller input sizes scale efficiently, larger input sizes face more significant overhead at least initially, likely due to communication and synchronization costs. As more processes are added, this overhead reduces, though the larger inputs still take longer to process compared to smaller ones.
+---
+## 3. Conclusion
+---
 
-The trend persists across the different input types.
+The radix sort algo overall demonstrates effective parallel scaling, particularly for larger matrix sizes. While comm (communication) remains stable and well-managed across processor counts and input types, the comp phase benefits significantly from parallelization but has diminishing returns at high processor counts. 
+<br> Input types like Random and ReverseSorted require more reordering, leading to initially higher runtimes, while Sorted and lightly perturbed inputs have lower overheads, achieving better initial efficiency. 
+<br> The algorithm overall achieves consistent weak and strong scaling, especially with larger input sizes. This alg can be effectively leveraged to handle large-scale, unordered data distributions.
 
-### Strong Scaling - Speedup
+---
 
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_1_perturbed.png">
-</div>
-In this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_Random.png">
-</div>
-Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_ReverseSorted.png">
-</div>
-
-Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
-<div style="background-color:white; padding:10px;">
-  <img width="604" alt="WeakScaling1" src="radix_sort/plots/strong_scaling_speedup_input_type_Sorted.png">
-</div>
-
-Similar to the above, in this plot, strong scaling seems effective up to a certain number of processes, after which the overhead of coordination reduces the speedup, particularly for smaller input sizes. Larger input sizes maintain better scalability, but still diminished speedup as they continue to benefit from additional processors.
-
-Overall, random seems to benefit the most when increasing processors up to a certain amount, and has a higher processor count allowed before the speedup starts to weaken and decrease. Sorted has a steep dropoff in speedup very early on in processor count. 
-
-- Merge Sort:
+# Merge Sort:
 ### Strong Scaling
 
 Strong Scaling for Comp Large (2^16):
