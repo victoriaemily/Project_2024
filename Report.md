@@ -472,21 +472,22 @@ Merge Sort Calltree:
 Radix Sort Calitree
 
 ```
-1.664 main
-├─ 0.000 MPI_Init
-├─ 0.000 data_init_runtime
-├─ 0.060 comp
-│  ├─ 0.000 comp_small
-│  └─ 0.060 comm
-│     ├─ 0.054 comm_small
-│     │  └─ 0.054 MPI_Alltoall
-│     └─ 0.006 comm_large
-│        └─ 0.006 MPI_Alltoallv
-├─ 0.000 correctness_check
+5.237 main
+├─ 0.032 MPI_Comm_dup
 ├─ 0.000 MPI_Finalize
-├─ 0.000 MPI_Initialized
 ├─ 0.000 MPI_Finalized
-└─ 0.000 MPI_Comm_dup
+├─ 0.000 MPI_Init
+├─ 0.000 MPI_Initialized
+├─ 1.421 comm
+│  ├─ 0.333 comm_large
+│  │  └─ 0.151 MPI_Alltoallv
+│  └─ 1.087 comm_small
+│     └─ 1.087 MPI_Alltoall
+├─ 3.243 comp
+│  ├─ 0.117 comp_large
+│  └─ 3.125 comp_small
+├─ 0.028 correctness_check
+└─ 0.064 data_init_runtime
 ```
 
 ### 3b. Collect Metadata
