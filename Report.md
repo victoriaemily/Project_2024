@@ -1395,11 +1395,11 @@ Speedup vs. Number of Processors (Random 65536)
 Speedup vs. Number of Processors (Random 268435456)
 <img width="894" alt="Screenshot 2024-11-01 at 6 21 02 PM" src="https://github.com/user-attachments/assets/7c52d772-f63f-4610-bf9f-dcae25b748b3">
 
-Total time vs. Number of Processors (Random 268435456)
-<img width="821" alt="Screenshot 2024-11-01 at 6 29 59 PM" src="https://github.com/user-attachments/assets/b0f7e490-69fe-4a00-877d-3de2efd30c69">
-
 Total time vs. Number of Processors (Random 65536)
 <img width="815" alt="Screenshot 2024-11-01 at 10 05 20 PM" src="https://github.com/user-attachments/assets/f7e4acfd-53ba-4a11-93e0-fc5fd12e0d8c">
+
+Total time vs. Number of Processors (Random 268435456)
+<img width="821" alt="Screenshot 2024-11-01 at 6 29 59 PM" src="https://github.com/user-attachments/assets/b0f7e490-69fe-4a00-877d-3de2efd30c69">
 
 ## 5. Presentation
 Plots for the presentation should be as follows:
