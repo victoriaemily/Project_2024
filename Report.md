@@ -1386,8 +1386,16 @@ For this plot, sample, radix, and merge sort once again had similar comp large t
 Comm vs. Number of Processors (1%_Perturbed 65536)
 <img width="801" alt="Screenshot 2024-11-01 at 6 26 07 PM" src="https://github.com/user-attachments/assets/80bbf58a-d20d-46b0-abbb-38fd0caa228c">
 
+The inputs near sorted nature benefits algorithms that can handle minor perturbances without excessive classification/reordering. Sample Sort and Merge Sort handle the 1% perturbed input and small input size more consistently across processors, whereas Radix and Bitonic Sort suffer from communication inefficiencies as processors increase, likely due to load imbalances as the number of processes increase. A outlier spike is noticed in the 128 processor run for Radix Sort and 256 processor run for Bitonic Sort, which could be due to a faulty run. 
+The spikes in Radix and Bitonic Sort suggest that their communication overhead becomes disproportionate when the data needs redistribution across more processors.
+
 Comm vs. Number of Processors (1%_Perturbed 268435456)
 <img width="876" alt="Screenshot 2024-11-01 at 6 21 25 PM" src="https://github.com/user-attachments/assets/41105904-e811-4579-8b28-2ffe175a8a68">
+
+Here, there is a marked difference between the communication times of Radix Sort in comparison to the different algorithms. This is likely because in Radix Sort, the lack of locality means that data is continuously reorganized across processors. Each reorganization step involves sending data to different processors based on the digit or bit being sorted, resulting in significant communication overhead.
+Comparing this with the previous smaller input graph (65536), we see that Radix Sort exhibited erratic spikes in communication at higher processor counts for the smaller input but stabilizes with the large input. This shift suggests that Radix Sort requires a large workload to offset communication overhead effectively, suggesting that other algorithms like Sample Sort and Merge Sort handle communication — regardless of input size. 
+Thus, for large datasets, Radix Sort scales well in communication but only after reaching a sufficient workload, whereas Sample Sort and Merge Sort show steady performance across input sizes.
+In comparison, Sample Sort, Merge Sort, and Bitonic Sort maintain low and stable communication times across all processor counts, indicating they are less sensitive to input size in terms of communication overhead.
 
 Speedup vs. Number of Processors (Random 65536)
 <img width="899" alt="Screenshot 2024-11-01 at 6 20 27 PM" src="https://github.com/user-attachments/assets/84dbea3a-10d1-40df-8c8c-2f3ac025fa9c">
