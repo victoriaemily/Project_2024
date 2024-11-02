@@ -1341,29 +1341,42 @@ For a random input type, we observe that the speedup is less erratic than that o
 
 ### Weak Scaling 
 
-Weak Scaling for Comp_large (Sorted)
-
-<img width="673" alt="Screenshot 2024-10-23 at 1 09 05 PM" src="https://github.com/user-attachments/assets/baa0afd9-499e-476c-ab2e-ffedca6abdd1">
-
-We now observe the large computation maximum time/rank in the same way that we observed the communication maximum time/rank. The graph starts with an initial decline when we first introduce the smaller processor counts. This indicates that parallelism will indeed lead to a decrease in the computation time, as with more processors the sorting of arrays is faster. However, past a certain number of processors, we see that the time seems to remain relatively constant, indicating that as we increase the number of processors, there is a tradeoff between faster processing and computational inefficiencies like load imbalances between processors that lead to a stagnant time. As such, there is an optimal number of processors, which keeps a good balance between the two. However, past this, adding more processors will be unnecessary and inefficient. We also note that as the array sizes increase, the computation time will also increase. This makes sense, as with larger data sizes to process, there will be more data to sort, therefore taking more time.
-
-Weak Scaling for Comp_large (Random)
-
-<img width="683" alt="Screenshot 2024-10-23 at 5 59 52 PM" src="https://github.com/user-attachments/assets/d2515316-3471-4e3a-86d2-1a9adb09f5e7">
-
-For a random input type, we notice the same trend as with the sorted input type, indicating that there is not much significance of the input type on computation performance with increasing array sizes and processors. This could once again indicate that there are uniform workload distributions regardless of the input type. Also, for the same reasons as listed above, we first observe a sharp decline when introducing the smaller processor counts which then seems to remain relatively constant as the number of processors increases. Similar to the sorted graph, there is also an increase in the computation time as we increase the size of the array.
-
 Weak Scaling for Comm (Sorted)
 
-<img width="630" alt="Screenshot 2024-10-23 at 1 08 20 PM" src="https://github.com/user-attachments/assets/707a800a-b972-45f1-8859-d56ae315430a">
+<img width="761" alt="Screenshot 2024-10-28 at 6 43 38 PM" src="https://github.com/user-attachments/assets/3cea66e7-7885-4b3e-a300-28e87fe3113c">
 
-We now move on to weak scaling for communication. As such, we examine how the communication maximum time/rank is influenced by both an increase in the array size and the number of processors. Initially, for all array sizes, there is a sharp decrease with a smaller number of processors. This indicates that with a smaller number of processors, there will be faster communication. However, when we move past 512 processors, we notice a slight increase in all the array sizes as there will be more communication overhead with more processors as explained in the analysis for the graphs above. We also note that with larger arrays, there will be more communication overhead as we see from the increases in time as we increase the array sizes. This is likely a result of the fact that with larger array sizes, there are more samples to communicate as well as more values to process into each bucket. 
+We now examine weak scaling for communication to understand how the maximum time/rank is influenced by an increase in both array size and the number of processors. Initially, for all array sizes, there is a sharp decrease in communication time as the number of processors starts low, indicating faster communication due to lower overhead. However, as we move past 512 processors, a slight increase in communication time is observed across all array sizes, which reflects the communication overhead associated with coordinating a larger number of processors. Larger arrays exhibit more pronounced communication overhead due to the increased number of samples to exchange and more data to process into each bucket. Despite this, larger array sizes maintain better communication performance as the number of processors increases. This is because, with larger data sets, each processor manages a significant workload, maintaining a balanced communication-to-computation ratio. Consequently, the large amount of data values per processor helps offset the communication costs, enabling more efficient resource use and improved communication performance as the processor count increases.
 
 Weak Scaling for Comm (Random)
 
-<img width="728" alt="Screenshot 2024-10-23 at 6 00 22 PM" src="https://github.com/user-attachments/assets/ba0da3bd-b40c-4850-9cc7-345e5d48b65e">
+<img width="768" alt="Screenshot 2024-10-28 at 6 43 44 PM" src="https://github.com/user-attachments/assets/e852975c-62e2-49c2-a5ac-d1c6306ec69c">
 
-We first note that there is not much difference in the random and sorted graphs. As such we observe that the input type does not strongly influence communication. This indicates that there are not many irregularities caused by different workload distributions. We also note that the data seems to have the same trends as the sorted graph. For the reasons listed in the prior analysis, we notice that communication time increases as we increase the number of processors and array sizes, and initially declines when we introduced the first processor counts.
+We note that the weak scaling graph for random input closely resembles that of the sorted input, indicating that the input type does not strongly influence the communication time when array size is taken into account. Both graphs display similar trends, where the communication time initially decreases as the number of processors increases, showing an improvement in communication performance. However, as the processor count and array sizes continue to increase, communication time starts to increase, consistent with the explanations provided in the previous analysis. This suggests that the communication overhead scales similarly for both random and sorted arrays as the number of processors and array sizes increases. As such, we understand that communication complexity becomes more dominant at higher scales.
+
+Weak Scaling for Comp Large (Sorted)
+
+<img width="769" alt="Screenshot 2024-10-28 at 6 42 49 PM" src="https://github.com/user-attachments/assets/e0796736-5090-4ac1-8db1-b223f5b5d7cf">
+
+We now observe the large computation maximum time/rank in the same way that we observed the communication maximum time/rank. The graph starts with an initial decline when we first introduce the smaller processor counts. This indicates that parallelism will indeed lead to a decrease in the computation time, as with more processors the sorting of arrays is faster. However, past a certain number of processors, we see that the time seems to remain relatively constant, indicating that as we increase the number of processors, there is a tradeoff between faster processing and computational inefficiencies like load imbalances between processors that lead to a stagnant time. Once again, with a load imbalance, one processor sorts more data than another highlighting an inefficiency in parallelism that diminishes the returns of parallel computing leading the algorithm to resemble more of a sequential algorithm. As such, there is an optimal number of processors, which keeps a good balance between the two. However, past this, adding more processors will be unnecessary and inefficient. We also note that as the array sizes increase, the computation time will also increase. This makes sense, as with larger data sizes to process, there will be more data to sort, therefore taking more time.
+
+Weak Scaling for Comp Large (Random)
+
+<img width="762" alt="Screenshot 2024-10-28 at 6 42 56 PM" src="https://github.com/user-attachments/assets/0e252c3a-b021-4a16-9e8c-5d21ec3188db">
+
+For a random input type, we evaluate similar data values as with the sorted input type, indicating that there is not much significance of the input type on computation performance with increasing array sizes. As such, while we understand that the input type itself can lead to slight variations in times, it does not change much with different array sizes. Also, for the same reasons as listed above, we first observe a sharp decline when introducing the smaller processor counts which then seems to remain relatively constant as the number of processors increases. Similar to the sorted graph, there is also an increase in the computation time as we increase the size of the array.
+
+
+Weak Scaling for Main (Sorted)
+
+<img width="785" alt="Screenshot 2024-10-28 at 6 44 33 PM" src="https://github.com/user-attachments/assets/7f6d8aa7-6c09-400f-9c65-4964bcf8e9d5">
+
+For the main graph sorted, we see that the graph is exceedingly similar to that of the communication time. As such what we can understand is that communication performance in this algorithm is much more significant to the overall time of the algorithm than computation performance. As such, the overall algorithm time relies more on the communication time. Therefore, when optimizing the algorithm, this is where the focus should be. Improving the communication distribution for samples and experimenting with different mpi communication methods can ultimately improve the efficiency and speed of the algorithm. 
+
+Weak Scaling for Main (Random)
+
+<img width="775" alt="Screenshot 2024-10-28 at 6 44 40 PM" src="https://github.com/user-attachments/assets/e148d369-236f-496c-82cc-dfa1fabb2007">
+
+As with the communication and large computation graphs, the random input type remains very similar to the sorted graph with only a few slight differences at specific processor counts. As such we once again can reiterate the idea that the array size does not have as much of an influence on the input type as other factors. 
 
 - All Algorithms:
 
