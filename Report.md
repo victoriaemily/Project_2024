@@ -1014,7 +1014,7 @@ This graph shows the weak scaling trend for comp_large with different array size
 </div>
 
 <div style="background-color:white; padding:10px;">
-  <img width="604" src="BitonicSort/plots/weak_scaling_1%_perturbed_comm.png">
+  <img width="604" src="BitonicSort/plots/weak_scaling_1_perturbed_comm.png">
 </div>
 
 In the weak scaling comm plot, we can see that, just like strong scaling comm, there is an increase up until 32 processes, then a decrease or a spike in the later processes. Again, this indicates that comm does not scale well for this implementation of bitonic sort. There is a runtime and resource trade-off as we add more processes. We can also see that the largest array size also has a noticeably larger runtime compared to the others, but also looks the most parallelized, from the line’s decrease after 32 processes. Because of the sheer amount of data it has to process and the potential overhead, the runtime is predictably larger. It seems so far that comm is the weakest aspect of bitonic sort.
